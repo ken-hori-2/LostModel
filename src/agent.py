@@ -410,21 +410,33 @@ class Agent():
 
 
     def back_position(self, BPLIST, w, Arc):
-        try:
-            Arc_INVERSE = [round(1/Arc[x],2) for x in range(len(Arc))]
-        except:
-        #     # Arc_INVERSE = [round(Arc[x],2) for x in range(len(Arc))]
-            print("ERROR")
-            Arc_INVERSE = []
-            for x in range(len(Arc)):
-                try:
-                    Arc_INVERSE.append(round(1/Arc[x],2))
-                except:
-                    Arc_INVERSE.append(0)
+        "== 一致度の大きさで戻るノードを決める場合 =="
+        # try:
+        #     Arc_INVERSE = [round(1/Arc[x],2) for x in range(len(Arc))]
+        # except:
+        # #     # Arc_INVERSE = [round(Arc[x],2) for x in range(len(Arc))]
+        #     print("ERROR")
+        #     Arc_INVERSE = []
+        #     for x in range(len(Arc)):
+        #         try:
+        #             Arc_INVERSE.append(round(1/Arc[x],2))
+        #         except:
+        #             Arc_INVERSE.append(0)
+        "----------------------------------------------------------------------"
+        # ストレスの小さいノードに戻るver.
+        "== stressの小ささで戻るノードを決める場合 =="
+        Arc_INVERSE = [round(Arc[x],2) for x in range(len(Arc))] # Arc_INVERSE ではなく Arc
+        "----------------------------------------------------------------------"
+
             
+        "----------------------------------------------------------------------"
+        # 正規化にすると0, 1が出てしまうので、stress×cost で0になりやすく、そこに戻ることが多くなってしまう 1026
+
+        
         # w = np.round(preprocessing.minmax_scale(w), 3)
         # Arc = np.round(preprocessing.minmax_scale(Arc), 3)
         # Arc_INVERSE = np.round(preprocessing.minmax_scale(Arc_INVERSE), 3)
+        "----------------------------------------------------------------------"
         print("📐正規化 w : {}, Arc : {}".format(w, Arc))
         print("📐 正規化 WEIGHT : {}, Arc_INVERSE : {}".format(w, Arc_INVERSE))
 
@@ -443,7 +455,8 @@ class Agent():
         if all(elem  == 0 for elem in WEIGHT_CROSS):
             print("WEIGHT CROSSは全部0です。")
             
-            # Arc = Arc.tolist()
+            # Arc = Arc.tolist() # 1026
+
             print("Arc type : {}".format(type(Arc)))
             near_index = Arc.index(min(Arc))
             print("Arc:{}, index:{}".format(Arc, near_index))
@@ -456,7 +469,11 @@ class Agent():
         #     pass
         # next_position = BPLIST[w.index(max(w))] # stressのみで戻る場所決定
         # 1024
-        next_position = BPLIST[WEIGHT_CROSS.index(max(WEIGHT_CROSS))] # stress + cost
+        "----------------------------------------------------------------------"
+        # next_position = BPLIST[WEIGHT_CROSS.index(max(WEIGHT_CROSS))] # stress + cost
+        # Add 1026
+        next_position = BPLIST[WEIGHT_CROSS.index(min(WEIGHT_CROSS))] # stress + cost
+        "----------------------------------------------------------------------"
 
 
 

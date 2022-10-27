@@ -36,7 +36,7 @@ class Action(Enum):
 class Environment():
 
     # def __init__(self, grid, NODELIST, map):
-    def __init__(self, *arg, move_prob = 0.8): # 1.0): # 0.8):
+    def __init__(self, *arg, move_prob = 1.0): # 0.8):
         
         self.agent_state = State()
         self.reset()

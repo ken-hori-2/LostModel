@@ -157,12 +157,16 @@ class Algorithm_advance():
                         # 本当はここで見つけた時に、現場情報のリストに格納していく
                         # self.Observation[self.state.row][self.state.column] = round(0.1 * random.randint(1, 10), 2) # 🔑今は観測されている前提の簡単なやつ
                         # add 1007(普段は↑)
-                        self.Observation[self.state.row][self.state.column] = self.Observation[self.state.row][self.state.column]
-
-
-
+                        # comment out 1025
+                        "----------------------------------------------------------------------------------------------------------"
+                        "Nodeに対するストレスの保存"
+                        # self.Observation[self.state.row][self.state.column] = self.Observation[self.state.row][self.state.column]
                         
+                        "== 基準距離でノードに対するストレス + 一致度の大きさで戻るノードを決める場合 =="
                         # self.Observation[self.state.row][self.state.column] = round(abs(1.0 - arc_s), 3)
+                        "== 基準距離でノードに対するストレス + stressの小ささで戻るノードを決める場合 =="
+                        # self.Observation[self.state.row][self.state.column] = round(abs(arc_s), 3)
+                        "----------------------------------------------------------------------------------------------------------"
                         pprint.pprint(self.Observation)
                         try:
                             self.OBS.append(self.Observation[self.state.row][self.state.column])
