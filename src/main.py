@@ -23,7 +23,7 @@ from exp_Algorithm import Algorithm_exp
 from agent import Agent
 
 # from setting import Setting
-from setting_large_bp import Setting
+from setting_large_bp_grid import Setting
 
 import pprint
 

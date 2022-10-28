@@ -166,6 +166,8 @@ class Algorithm_advance():
                         # self.Observation[self.state.row][self.state.column] = round(abs(1.0 - arc_s), 3)
                         "== 基準距離でノードに対するストレス + stressの小ささで戻るノードを決める場合 =="
                         # self.Observation[self.state.row][self.state.column] = round(abs(arc_s), 3)
+
+                        "全部コメントアウトの時はsettingのobservationの数値をそのまま使う"
                         "----------------------------------------------------------------------------------------------------------"
                         pprint.pprint(self.Observation)
                         try:
