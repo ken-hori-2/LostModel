@@ -52,7 +52,7 @@ class Algorithm_advance():
     
             
 
-    def Advance(self, STATE_HISTORY, state, TRIGAR, OBS, total_stress, grid, CrossRoad, x, TOTAL_STRESS_LIST, Node_s, Node_A, Node_B, Node_C, Node_D, Node_g):
+    def Advance(self, STATE_HISTORY, state, TRIGAR, OBS, total_stress, grid, CrossRoad, x, TOTAL_STRESS_LIST, Node_s, Node_A, Node_B, Node_C, Node_D, Node_g, Cost_S, Cost_O, Cost_A, Cost_B, Cost_C, Cost_D):
         self.STATE_HISTORY = STATE_HISTORY
         self.state = state
         self.TRIGAR = TRIGAR
@@ -83,6 +83,16 @@ class Algorithm_advance():
         self.Node_C = Node_C
         self.Node_D = Node_D
         self.Node_g = Node_g
+
+        self.Cost_S = Cost_S
+        self.Cost_O = Cost_O
+        self.Cost_A = Cost_A
+        self.Cost_B = Cost_B
+        self.Cost_C = Cost_C
+        self.Cost_D = Cost_D
+        
+
+        "-- 方向verも追加 --"
 
         # test Add 1029
         arc_s = 0
@@ -320,6 +330,14 @@ class Algorithm_advance():
                                 # #     self.Storage_Stress.append(0.0)
                                 # "----------------------------------"
 
+                            "--test--"
+                            self.Cost_S.append(0)
+                            self.Cost_A.append(0)
+                            self.Cost_B.append(0)
+                            self.Cost_C.append(0)
+                            self.Cost_D.append(0)
+                            self.Cost_O.append(0)
+
                         # for bp, arc in zip(self.BPLIST, self.SAVE_ARC):
                             # if bp in self.Storage:
                                 # self.Storage_Arc.append(sum(self.test_arc))
@@ -396,6 +414,20 @@ class Algorithm_advance():
                                 self.CrossRoad.append(self.state)
 
                             print("CrossRoad : {}\n\n\n".format(self.CrossRoad))
+
+                            "-- Add 1031 --"
+                            # if self.NODELIST[self.state.row][self.state.column] not in pre: # これいらない
+                            #     print("事前情報にないNode!!!!!!!!!!!!")
+                            #     self.total_stress+=1
+                            #     if self.NODELIST[self.state.row][self.state.column] == "x": # "O": # "g":
+                            #         self.Node_s.append(0)
+                            #         self.Node_A.append(0)
+                            #         self.Node_B.append(0)
+                            #         self.Node_C.append(0)
+                            #         self.Node_D.append(0)
+                            #         self.Node_g.append(1.0) # stress)
+                            "-- Add 1031 --"
+
                         print("🪧 NODE : ❌")
                         print("no match!")
                         # stress += 1
@@ -460,6 +492,14 @@ class Algorithm_advance():
             self.Node_D.append(0)
             self.Node_g.append(0)
 
+            "--test--"
+            self.Cost_S.append(0)
+            self.Cost_A.append(0)
+            self.Cost_B.append(0)
+            self.Cost_C.append(0)
+            self.Cost_D.append(0)
+            self.Cost_O.append(0)
+
             # # Add 1028
             # self.Storage_Stress_LIST.append(self.Storage_Stress)
             # print("Storage Stress LIST : {}".format(self.Storage_Stress_LIST))
@@ -498,4 +538,4 @@ class Algorithm_advance():
 
         print("CrossRoad : {}\n\n\n".format(self.CrossRoad))
 
-        return self.total_stress, self.STATE_HISTORY, self.state, self.TRIGAR, self.OBS, self.BPLIST, self.action, self.Add_Advance, GOAL, self.SAVE_ARC, self.CrossRoad, self.Storage, self.Storage_Stress, self.TOTAL_STRESS_LIST, self.Node_s, self.Node_A, self.Node_B, self.Node_C, self.Node_D, self.Node_g # , permission
+        return self.total_stress, self.STATE_HISTORY, self.state, self.TRIGAR, self.OBS, self.BPLIST, self.action, self.Add_Advance, GOAL, self.SAVE_ARC, self.CrossRoad, self.Storage, self.Storage_Stress, self.TOTAL_STRESS_LIST, self.Node_s, self.Node_A, self.Node_B, self.Node_C, self.Node_D, self.Node_g, self.Cost_S, self.Cost_O, self.Cost_A, self.Cost_B, self.Cost_C, self.Cost_D # , permission

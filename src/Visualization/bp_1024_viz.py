@@ -43,7 +43,7 @@ class Algorithm_bp():
         self.SAVE = []
             
 
-    def BP(self, STATE_HISTORY, state, TRIGAR, OBS, BPLIST, action, Add_Advance, total_stress, SAVE_ARC, TOTAL_STRESS_LIST, Node_s, Node_A, Node_B, Node_C, Node_D, Node_g):
+    def BP(self, STATE_HISTORY, state, TRIGAR, OBS, BPLIST, action, Add_Advance, total_stress, SAVE_ARC, TOTAL_STRESS_LIST, Node_s, Node_A, Node_B, Node_C, Node_D, Node_g, Cost_S, Cost_O, Cost_A, Cost_B, Cost_C, Cost_D):
         self.STATE_HISTORY = STATE_HISTORY
         self.state = state
         self.TRIGAR = TRIGAR
@@ -69,6 +69,15 @@ class Algorithm_bp():
         self.Node_D = Node_D
         self.Node_g = Node_g
 
+
+        "-- test --"
+        self.Cost_S = Cost_S
+        self.Cost_O = Cost_O
+        self.Cost_A = Cost_A
+        self.Cost_B = Cost_B
+        self.Cost_C = Cost_C
+        self.Cost_D = Cost_D
+
         while not self.done:
         
             print("\n-----{}Steps-----".format(self.COUNT+1))
@@ -91,12 +100,47 @@ class Algorithm_bp():
                         print("📂 Storage {}".format(self.BPLIST))
                         
                         # callback
-                        self.next_position = self.agent.back_position(self.BPLIST, self.w, self.Arc)
+                        # self.next_position = self.agent.back_position(self.BPLIST, self.w, self.Arc)
+                        self.next_position, w, Arc, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
+
+
                         print(f"========Decision Next State=======\n⚠️  NEXT POSITION:{self.next_position}\n==================================")
                         self.on_the_way = True
                         
 
                         self.BACK_REVERSE = False
+
+
+                        "--test--"
+                        # try:
+                        #     self.Cost_S.append(0)
+                        #     for i in range(len(Arc)):
+                        #         if i == 0:
+                        #             self.Cost_O.append(Arc[i])
+                        #         elif i == 1:
+                        #             self.Cost_A.append(Arc[i])
+                        #         elif i == 2:
+                        #             self.Cost_B.append(Arc[i])
+                        #         elif i == 3:
+                        #             self.Cost_C.append(Arc[i])
+                        #         elif i == 4:
+                        #             self.Cost_D.append(0)
+                        #     # self.Cost_S.append(0) # Arc)
+                        #     # self.Cost_O.append(Arc[0]) # Arc)
+                        #     # self.Cost_A.append(Arc[1])
+                        #     # self.Cost_B.append(Arc[2])
+                        #     # self.Cost_C.append(Arc[3])
+                        #     # self.Cost_D.append(0) #Arc[3])
+                        # except:
+                        #     print("error")
+                        #     self.Cost_S.append(0)
+                        #     self.Cost_A.append(0)
+                        #     self.Cost_B.append(0)
+                        #     self.Cost_C.append(0)
+                        #     self.Cost_D.append(0)
+                        #     self.Cost_O.append(0)
+                        self.Cost_S.append(Arc)
+                        self.Cost_O.append(WEIGHT_CROSS)
                     except:
                     # except Exception as e:
                     #     print('=== エラー内容 ===')
@@ -149,6 +193,14 @@ class Algorithm_bp():
                         self.Node_C.append(0)
                         self.Node_D.append(0)
                         self.Node_g.append(0)
+
+                        # "--test--"
+                        # self.Cost_S.append(0)
+                        # self.Cost_A.append(0)
+                        # self.Cost_B.append(0)
+                        # self.Cost_C.append(0)
+                        # self.Cost_D.append(0)
+                        # self.Cost_O.append(0)
                         
                         
                         # 0921 統合テスト
@@ -247,9 +299,47 @@ class Algorithm_bp():
                         self.BACK = False
                         
                         # callback
-                        self.next_position = self.agent.back_position(self.BPLIST, self.w, self.Arc)
+                        # self.next_position = self.agent.back_position(self.BPLIST, self.w, self.Arc)
+
+                        self.next_position, w, Arc, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
+
+
                         print(f"========Decision Next State=======\n⚠️  NEXT POSITION:{self.next_position}\n==================================")
                         self.on_the_way = True
+
+
+                        "--test--"
+                        # try:
+                        #     self.Cost_S.append(0)
+                        #     for i in range(len(Arc)):
+                        #         if i == 0:
+                        #             self.Cost_O.append(Arc[i])
+                        #         elif i == 1:
+                        #             self.Cost_A.append(Arc[i])
+                        #         elif i == 2:
+                        #             self.Cost_B.append(Arc[i])
+                        #         elif i == 3:
+                        #             self.Cost_C.append(Arc[i])
+                        #         elif i == 4:
+                        #             self.Cost_D.append(0)
+                        #         # elif i == 5:
+                                    
+                        #     # self.Cost_S.append(0) # Arc)
+                        #     # self.Cost_O.append(Arc[0]) # Arc)
+                        #     # self.Cost_A.append(Arc[1])
+                        #     # self.Cost_B.append(Arc[2])
+                        #     # self.Cost_C.append(Arc[3])
+                        #     # self.Cost_D.append(0) #Arc[3])
+                        # except:
+                        #     print("error")
+                        #     self.Cost_S.append(0)
+                        #     self.Cost_A.append(0)
+                        #     self.Cost_B.append(0)
+                        #     self.Cost_C.append(0)
+                        #     self.Cost_D.append(0)
+                        #     self.Cost_O.append(0)
+                        self.Cost_S.append(Arc)
+                        self.Cost_O.append(WEIGHT_CROSS)
 
                         
                     except:
@@ -320,6 +410,14 @@ class Algorithm_bp():
                         self.Node_C.append(0)
                         self.Node_D.append(0)
                         self.Node_g.append(0)
+
+                        # "--test--"
+                        # self.Cost_S.append(0)
+                        # self.Cost_A.append(0)
+                        # self.Cost_B.append(0)
+                        # self.Cost_C.append(0)
+                        # self.Cost_D.append(0)
+                        # self.Cost_O.append(0)
                         
 
 
@@ -368,6 +466,14 @@ class Algorithm_bp():
                 self.Node_C.append(0)
                 self.Node_D.append(0)
                 self.Node_g.append(0)
+
+                "--test--"
+                self.Cost_S.append(0)
+                self.Cost_A.append(0)
+                self.Cost_B.append(0)
+                self.Cost_C.append(0)
+                self.Cost_D.append(0)
+                self.Cost_O.append(0)
             print(f"Total Stress:{self.total_stress}")
 
             print("TRIGAR : {}".format(self.TRIGAR))
@@ -398,4 +504,4 @@ class Algorithm_bp():
         # print("state_history : {}".format(self.STATE_HISTORY))
         self.COUNT = 0
 
-        return self.total_stress, self.STATE_HISTORY, self.state, self.OBS, self.BackPosition_finish, self.TOTAL_STRESS_LIST, self.Node_s, self.Node_A, self.Node_B, self.Node_C, self.Node_D, self.Node_g
+        return self.total_stress, self.STATE_HISTORY, self.state, self.OBS, self.BackPosition_finish, self.TOTAL_STRESS_LIST, self.Node_s, self.Node_A, self.Node_B, self.Node_C, self.Node_D, self.Node_g, self.Cost_S, self.Cost_O, self.Cost_A, self.Cost_B, self.Cost_C, self.Cost_D

@@ -30,7 +30,7 @@ class Algorithm_exp():
         self.bp_end = False
             
 
-    def Explore(self, STATE_HISTORY, state, TRIGAR, total_stress, grid, CrossRoad, x, TOTAL_STRESS_LIST, Node_s, Node_A, Node_B, Node_C, Node_D, Node_g): # , PERMISSION):
+    def Explore(self, STATE_HISTORY, state, TRIGAR, total_stress, grid, CrossRoad, x, TOTAL_STRESS_LIST, Node_s, Node_A, Node_B, Node_C, Node_D, Node_g, Cost_S, Cost_O, Cost_A, Cost_B, Cost_C, Cost_D): # , PERMISSION):
 
         self.STATE_HISTORY = STATE_HISTORY
         self.state = state
@@ -67,6 +67,14 @@ class Algorithm_exp():
         # self.STATE_HISTORY.append(self.state)
         # self.STATE_HISTORY.append(self.state)
         # self.STATE_HISTORY.append(self.state)
+
+        "-- test --"
+        self.Cost_S = Cost_S
+        self.Cost_O = Cost_O
+        self.Cost_A = Cost_A
+        self.Cost_B = Cost_B
+        self.Cost_C = Cost_C
+        self.Cost_D = Cost_D
 
         while not self.done:
             print("\n========== 🌟 {}steps ==========".format(self.COUNT+1))
@@ -164,7 +172,7 @@ class Algorithm_exp():
             self.total_stress = round(random.uniform(2.0,2.5), 3) # 2 # 10
             self.TOTAL_STRESS_LIST.append(self.total_stress) # 分岐先を探索した前提
             # self.TOTAL_STRESS_LIST.append(abs(1.0-self.total_stress))
-
+            
             # self.STATE_HISTORY.append(self.state)
             # self.TOTAL_STRESS_LIST.append(self.total_stress)
             
@@ -183,6 +191,21 @@ class Algorithm_exp():
             self.Node_D.append(0)
             self.Node_g.append(0)
             # self.Node_A.append(0)
+
+            "--test--"
+            self.Cost_S.append(0)
+            self.Cost_A.append(0)
+            self.Cost_B.append(0)
+            self.Cost_C.append(0)
+            self.Cost_D.append(0)
+            self.Cost_O.append(0)
+            "--test--"
+            self.Cost_S.append(0)
+            self.Cost_A.append(0)
+            self.Cost_B.append(0)
+            self.Cost_C.append(0)
+            self.Cost_D.append(0)
+            self.Cost_O.append(0)
             "--------------------------------------------------"
 
 
@@ -232,4 +255,4 @@ class Algorithm_exp():
         if self.done:
             print("GOAL")
 
-        return self.total_stress, self.STATE_HISTORY, self.state, self.TRIGAR, self.CrossRoad, GOAL, self.TOTAL_STRESS_LIST, self.Node_s, self.Node_A, self.Node_B, self.Node_C, self.Node_D, self.Node_g
+        return self.total_stress, self.STATE_HISTORY, self.state, self.TRIGAR, self.CrossRoad, GOAL, self.TOTAL_STRESS_LIST, self.Node_s, self.Node_A, self.Node_B, self.Node_C, self.Node_D, self.Node_g, self.Cost_S, self.Cost_O, self.Cost_A, self.Cost_B, self.Cost_C, self.Cost_D
