@@ -100,8 +100,8 @@ class Algorithm_bp():
                         print("📂 Storage {}".format(self.BPLIST))
                         
                         # callback
-                        # self.next_position = self.agent.back_position(self.BPLIST, self.w, self.Arc)
-                        self.next_position, w, Arc, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
+                        self.next_position = self.agent.back_position(self.BPLIST, self.w, self.Arc)
+                        # self.next_position, w, Arc, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
 
 
                         print(f"========Decision Next State=======\n⚠️  NEXT POSITION:{self.next_position}\n==================================")
@@ -133,14 +133,49 @@ class Algorithm_bp():
                         #     # self.Cost_D.append(0) #Arc[3])
                         # except:
                         #     print("error")
-                        #     self.Cost_S.append(0)
-                        #     self.Cost_A.append(0)
-                        #     self.Cost_B.append(0)
-                        #     self.Cost_C.append(0)
-                        #     self.Cost_D.append(0)
-                        #     self.Cost_O.append(0)
-                        self.Cost_S.append(Arc)
-                        self.Cost_O.append(WEIGHT_CROSS)
+                        #     # self.Cost_S.append(0)
+                        #     # self.Cost_A.append(0)
+                        #     # self.Cost_B.append(0)
+                        #     # self.Cost_C.append(0)
+                        #     # self.Cost_D.append(0)
+                        #     # self.Cost_O.append(0)
+                        CS = 0
+                        CA = 0
+                        CB = 0
+                        CC = 0
+                        CD = 0
+                        CO = 0
+                        # self.Cost_S.append(0)
+                        for i in range(len(self.Arc)):
+                            if i == 0:
+                                # self.Cost_O.append(Arc[i])
+                                CO = self.Arc[i]
+                                
+                            elif i == 1:
+                                # self.Cost_A.append(Arc[i])
+                                CA = self.Arc[i]
+                                
+                            elif i == 2:
+                                # self.Cost_B.append(Arc[i])
+                                CB = self.Arc[i]
+                                
+                            elif i == 3:
+                                # self.Cost_C.append(Arc[i])
+                                CC = self.Arc[i]
+                                
+                            elif i == 4:
+                                # self.Cost_D.append(0)
+                                CD = self.Arc[i]
+
+                        self.Cost_S.append(CS)
+                        self.Cost_A.append(CA)
+                        self.Cost_B.append(CB)
+                        self.Cost_C.append(CC)
+                        self.Cost_D.append(CD)
+                        self.Cost_O.append(CO)
+
+                        # self.Cost_S.append(Arc)
+                        # self.Cost_O.append(WEIGHT_CROSS)
                     except:
                     # except Exception as e:
                     #     print('=== エラー内容 ===')
@@ -172,11 +207,7 @@ class Algorithm_bp():
                         print("🔚 ARRIVE AT BACK POSITION (戻り終わりました。)")
                         print(f"🤖 State:{self.state}")
 
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-
-
+                        
                         self.total_stress = 0
 
                         # Add 1025
@@ -194,13 +225,13 @@ class Algorithm_bp():
                         self.Node_D.append(0)
                         self.Node_g.append(0)
 
-                        # "--test--"
-                        # self.Cost_S.append(0)
-                        # self.Cost_A.append(0)
-                        # self.Cost_B.append(0)
-                        # self.Cost_C.append(0)
-                        # self.Cost_D.append(0)
-                        # self.Cost_O.append(0)
+                        "--test--"
+                        self.Cost_S.append(CS)
+                        self.Cost_A.append(CA)
+                        self.Cost_B.append(CB)
+                        self.Cost_C.append(CC)
+                        self.Cost_D.append(CD)
+                        self.Cost_O.append(CO)
                         
                         
                         # 0921 統合テスト
@@ -299,9 +330,9 @@ class Algorithm_bp():
                         self.BACK = False
                         
                         # callback
-                        # self.next_position = self.agent.back_position(self.BPLIST, self.w, self.Arc)
+                        self.next_position = self.agent.back_position(self.BPLIST, self.w, self.Arc)
 
-                        self.next_position, w, Arc, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
+                        # self.next_position, w, Arc, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
 
 
                         print(f"========Decision Next State=======\n⚠️  NEXT POSITION:{self.next_position}\n==================================")
@@ -310,36 +341,53 @@ class Algorithm_bp():
 
                         "--test--"
                         # try:
-                        #     self.Cost_S.append(0)
-                        #     for i in range(len(Arc)):
-                        #         if i == 0:
-                        #             self.Cost_O.append(Arc[i])
-                        #         elif i == 1:
-                        #             self.Cost_A.append(Arc[i])
-                        #         elif i == 2:
-                        #             self.Cost_B.append(Arc[i])
-                        #         elif i == 3:
-                        #             self.Cost_C.append(Arc[i])
-                        #         elif i == 4:
-                        #             self.Cost_D.append(0)
-                        #         # elif i == 5:
+                        CS = 0
+                        CA = 0
+                        CB = 0
+                        CC = 0
+                        CD = 0
+                        CO = 0
+                        # self.Cost_S.append(0)
+                        for i in range(len(self.Arc)):
+                            if i == 0:
+                                # self.Cost_O.append(Arc[i])
+                                CO = self.Arc[i]
+                                
+                            elif i == 1:
+                                # self.Cost_A.append(Arc[i])
+                                CA = self.Arc[i]
+                                
+                            elif i == 2:
+                                # self.Cost_B.append(Arc[i])
+                                CB = self.Arc[i]
+                                
+                            elif i == 3:
+                                # self.Cost_C.append(Arc[i])
+                                CC = self.Arc[i]
+                                
+                            elif i == 4:
+                                # self.Cost_D.append(0)
+                                CD = self.Arc[i]
+                            # elif i == 5:
                                     
-                        #     # self.Cost_S.append(0) # Arc)
-                        #     # self.Cost_O.append(Arc[0]) # Arc)
-                        #     # self.Cost_A.append(Arc[1])
-                        #     # self.Cost_B.append(Arc[2])
-                        #     # self.Cost_C.append(Arc[3])
-                        #     # self.Cost_D.append(0) #Arc[3])
+                            # self.Cost_S.append(0) # Arc)
+                            # self.Cost_O.append(Arc[0]) # Arc)
+                            # self.Cost_A.append(Arc[1])
+                            # self.Cost_B.append(Arc[2])
+                            # self.Cost_C.append(Arc[3])
+                            # self.Cost_D.append(0) #Arc[3])
                         # except:
                         #     print("error")
-                        #     self.Cost_S.append(0)
-                        #     self.Cost_A.append(0)
-                        #     self.Cost_B.append(0)
-                        #     self.Cost_C.append(0)
-                        #     self.Cost_D.append(0)
-                        #     self.Cost_O.append(0)
-                        self.Cost_S.append(Arc)
-                        self.Cost_O.append(WEIGHT_CROSS)
+                        "-- Add 1031 --"
+                        self.Cost_S.append(CS)
+                        self.Cost_A.append(CA)
+                        self.Cost_B.append(CB)
+                        self.Cost_C.append(CC)
+                        self.Cost_D.append(CD)
+                        self.Cost_O.append(CO)
+                            
+                        # self.Cost_S.append(Arc)
+                        # self.Cost_O.append(WEIGHT_CROSS)
 
                         
                     except:
@@ -378,21 +426,7 @@ class Algorithm_bp():
                         print(f"🤖 State:{self.state}")
                         print("OBS : {}".format(self.OBS))
 
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-
-
-
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
+                        
 
                         self.total_stress = 0
 
@@ -418,6 +452,14 @@ class Algorithm_bp():
                         # self.Cost_C.append(0)
                         # self.Cost_D.append(0)
                         # self.Cost_O.append(0)
+
+                        "-- Add 1031 --"
+                        self.Cost_S.append(CS)
+                        self.Cost_A.append(CA)
+                        self.Cost_B.append(CB)
+                        self.Cost_C.append(CC)
+                        self.Cost_D.append(CD)
+                        self.Cost_O.append(CO)
                         
 
 
@@ -468,12 +510,12 @@ class Algorithm_bp():
                 self.Node_g.append(0)
 
                 "--test--"
-                self.Cost_S.append(0)
-                self.Cost_A.append(0)
-                self.Cost_B.append(0)
-                self.Cost_C.append(0)
-                self.Cost_D.append(0)
-                self.Cost_O.append(0)
+                self.Cost_S.append(CS) #0)
+                self.Cost_A.append(CA) #0)
+                self.Cost_B.append(CB) #0)
+                self.Cost_C.append(CC) #0)
+                self.Cost_D.append(CD) #0)
+                self.Cost_O.append(CO) #0)
             print(f"Total Stress:{self.total_stress}")
 
             print("TRIGAR : {}".format(self.TRIGAR))

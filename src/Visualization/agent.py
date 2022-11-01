@@ -485,7 +485,7 @@ class Agent():
 
         
 
-        return next_position, w, Arc_INVERSE, WEIGHT_CROSS
+        return next_position # , w, Arc_INVERSE, WEIGHT_CROSS
 
     def back_end(self, BPLIST, next_position, w, OBS):
         

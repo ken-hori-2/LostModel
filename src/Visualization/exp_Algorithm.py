@@ -193,19 +193,19 @@ class Algorithm_exp():
             # self.Node_A.append(0)
 
             "--test--"
-            self.Cost_S.append(0)
-            self.Cost_A.append(0)
-            self.Cost_B.append(0)
-            self.Cost_C.append(0)
-            self.Cost_D.append(0)
-            self.Cost_O.append(0)
-            "--test--"
-            self.Cost_S.append(0)
-            self.Cost_A.append(0)
-            self.Cost_B.append(0)
-            self.Cost_C.append(0)
-            self.Cost_D.append(0)
-            self.Cost_O.append(0)
+            # self.Cost_S.append(0)
+            # self.Cost_A.append(0)
+            # self.Cost_B.append(0)
+            # self.Cost_C.append(0)
+            # self.Cost_D.append(0)
+            # self.Cost_O.append(0)
+            # "--test--"
+            # self.Cost_S.append(0)
+            # self.Cost_A.append(0)
+            # self.Cost_B.append(0)
+            # self.Cost_C.append(0)
+            # self.Cost_D.append(0)
+            # self.Cost_O.append(0)
             "--------------------------------------------------"
 
 

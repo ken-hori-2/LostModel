@@ -330,13 +330,21 @@ class Algorithm_advance():
                                 # #     self.Storage_Stress.append(0.0)
                                 # "----------------------------------"
 
-                            "--test--"
-                            self.Cost_S.append(0)
-                            self.Cost_A.append(0)
-                            self.Cost_B.append(0)
-                            self.Cost_C.append(0)
-                            self.Cost_D.append(0)
-                            self.Cost_O.append(0)
+                        "--test--"
+                        self.Cost_S.append(0)
+                        self.Cost_A.append(0)
+                        self.Cost_B.append(0)
+                        self.Cost_C.append(0)
+                        self.Cost_D.append(0)
+                        self.Cost_O.append(0)
+
+                        # "--test--"
+                        # self.Cost_S.append(0)
+                        # self.Cost_A.append(0)
+                        # self.Cost_B.append(0)
+                        # self.Cost_C.append(0)
+                        # self.Cost_D.append(0)
+                        # self.Cost_O.append(0)
 
                         # for bp, arc in zip(self.BPLIST, self.SAVE_ARC):
                             # if bp in self.Storage:
