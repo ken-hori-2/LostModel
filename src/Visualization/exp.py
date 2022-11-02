@@ -56,18 +56,6 @@ class Algorithm_exp():
         self.Node_D = Node_D
         self.Node_g = Node_g
 
-        # self.STATE_HISTORY.append(self.state)
-        # self.STATE_HISTORY.append(self.state)
-        # self.STATE_HISTORY.append(self.state)
-        # self.STATE_HISTORY.append(self.state)
-
-
-        # self.STATE_HISTORY.append(self.state)
-        # self.STATE_HISTORY.append(self.state)
-        # self.STATE_HISTORY.append(self.state)
-        # self.STATE_HISTORY.append(self.state)
-        # self.STATE_HISTORY.append(self.state)
-
         "-- test --"
         self.Cost_S = Cost_S
         self.Cost_O = Cost_O
@@ -85,16 +73,6 @@ class Algorithm_exp():
 
         while not self.done:
             print("\n========== 🌟 {}steps ==========".format(self.COUNT+1))
-
-            # if self.total_stress + self.stress >= 0:
-            #     self.total_stress += self.stress
-
-
-            
-            
-            
-            # self.STATE_HISTORY.append(self.state)
-            
             print(f"🤖 State:{self.state}")
             print("stress : {}".format(self.stress))
 
@@ -102,46 +80,26 @@ class Algorithm_exp():
             self.map_unexp_area = self.env.map_unexp_area(self.state)
             if self.map_unexp_area:
                 print("un explore area ! 🤖 ❓❓")
-                # Add 0924################################################
-                # if self.NODELIST[self.state.row][self.state.column] > 0.0:
                 if self.NODELIST[self.state.row][self.state.column] in pre:
 
                     print("🪧 NODE : ⭕️")
-                    
                     if self.total_stress + self.stress >= 0:
                         self.total_stress += self.stress
-
-
                     if self.NODELIST[self.state.row][self.state.column] == "g":
                         print("🤖 GOALに到達しました。")
                         GOAL = True
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
                         break
-                    
-                    
-                    
-                    
-                    # self.TRIGAR = False # ここでFalseにすることでadvance_Algorithmで撮った場所のノードも追加してしまう
-
                     print("\n============================\n🤖 🔛　アルゴリズム切り替え\n============================")
-                    break # Advanceに移行する？
-                # Add 0924################################################
+                    break
 
             if self.NODELIST[self.state.row][self.state.column] in pre:
                 index = Node.index(self.NODELIST[self.state.row][self.state.column])
-                # test = x-sum_test
-            
                 print("<{}> match !".format(self.NODELIST[self.state.row][self.state.column]))
                 print("事前のArc : {}".format(Arc[index]))
                 self.total_stress = 0
-
-            # if not self.lost:
             else:
                 if self.total_stress + self.stress >= 0:
                     self.total_stress += self.stress
-
-
                 if self.grid[self.state.row][self.state.column] == 5:
                     print("\n\n\n交差点! 🚥　🚙　✖️")
                     if self.state not in self.CrossRoad:
@@ -158,20 +116,12 @@ class Algorithm_exp():
                 print("FULL ! MAX! 🔙⛔️")
                 print("=================")
                 self.state = self.NODE_POSITION
-                # self.STATE_HISTORY.append(self.state)
-                # self.STATE_HISTORY.append(self.state)
-                # self.STATE_HISTORY.append(self.state)
                 print(f"🤖 State:{self.state}")
                 self.total_stress = 0
-                
-             
-
-            
             print(f"Total Stress:{self.total_stress}")
             print("trigar : {}".format(self.TRIGAR))
 
             "--------------------------------------------------"
-            # Add 1025
             self.STATE_HISTORY.append(self.state)
             self.TOTAL_STRESS_LIST.append(self.total_stress)
             # self.TOTAL_STRESS_LIST.append(abs(1.0-self.total_stress))
@@ -179,9 +129,6 @@ class Algorithm_exp():
             self.total_stress = round(random.uniform(2.0,2.5), 3) # 2 # 10
             self.TOTAL_STRESS_LIST.append(self.total_stress) # 分岐先を探索した前提
             # self.TOTAL_STRESS_LIST.append(abs(1.0-self.total_stress))
-            
-            # self.STATE_HISTORY.append(self.state)
-            # self.TOTAL_STRESS_LIST.append(self.total_stress)
             
             self.Node_s.append(0)
             self.Node_A.append(0)
@@ -197,16 +144,8 @@ class Algorithm_exp():
             self.Node_C.append(0)
             self.Node_D.append(0)
             self.Node_g.append(0)
-            # self.Node_A.append(0)
 
             "--test--"
-            # self.Cost_S.append(0)
-            # self.Cost_A.append(0)
-            # self.Cost_B.append(0)
-            # self.Cost_C.append(0)
-            # self.Cost_D.append(0)
-            # self.Cost_O.append(0)
-            # "--test--"
             # self.Cost_S.append(0)
             # self.Cost_A.append(0)
             # self.Cost_B.append(0)
@@ -231,21 +170,13 @@ class Algorithm_exp():
                 print("LOST! 🔙⛔️")
                 print("=================")
                 self.state = self.NODE_POSITION
-                # self.STATE_HISTORY.append(self.state)
-                # self.STATE_HISTORY.append(self.state)
-                # self.STATE_HISTORY.append(self.state)
                 print(f"🤖 State:{self.state}")
                 self.total_stress = 0
-                # break
-                
             print("All explore : {}".format(self.All_explore))
             if self.All_explore:
                 self.env.mark_all(state)
-                # self.STATE_HISTORY.append(self.state)
                 print("終了します")
                 self.All_explore = False
-                # self.total_stress = 0
-
                 ############コメントアウト##############
                 # self.TRIGAR = True
                 ############コメントアウト##############
@@ -258,14 +189,10 @@ class Algorithm_exp():
                 self.state = self.next_state
             else:
                 self.lost = False
-
-            # print(f"Total Stress 2 :{self.total_stress}")
-
             if self.COUNT > 150: # 50: # 150:
                 break
             self.COUNT += 1
-
-        # print("state_history : {}".format(self.STATE_HISTORY))
+            
         if self.done:
             print("GOAL")
 

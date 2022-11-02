@@ -1,50 +1,18 @@
-from enum import Enum
-from pprint import pprint
-from tkinter import FIRST
-import numpy as np
-import random
-
-# import sys
-# sys.path.append("/Users/ken/Desktop/model/src/Oneroad/explore/agent")
-
-from sklearn import preprocessing
-
-# from Env_full import Environment
-# from environment import Environment
-from environment_prob import Environment
-
-# from bp_Algorithm import Algorithm_bp
-# from bp_1024_viz import Algorithm_bp # 戻る行動の可視化ver.
-
-
-# from Visualization.bp_1024_viz import Algorithm_bp # 戻る行動の可視化ver.
-from Visualization.bp import Algorithm_bp # 戻る行動の可視化ver.
-
-# from bp_Algorithm_re import Algorithm_bp_re
-
-# from exp_Algorithm import Algorithm_exp
-# from Visualization.exp_Algorithm import Algorithm_exp
-from Visualization.exp import Algorithm_exp
-
-from Visualization.agent import Agent
-
-# from setting import Setting
+import sys
+# sys.path.append("../")
+# sys.path.append("/Users/ken/Desktop/model/src/Oneroad/explore/agent/src/__Algorithm__NEW/3_road/Lost_Model/src")
+# from Visualization.environment import Environment
+# from Visualization.bp import Algorithm_bp # 戻る行動の可視化ver.
+# from Visualization.exp import Algorithm_exp
+# from Visualization.agent import Agent
+# from Visualization.setting_large_bp_grid import Setting
+# from Visualization.advance import Algorithm_advance
+from environment import Environment
+from bp import Algorithm_bp # 戻る行動の可視化ver.
+from exp import Algorithm_exp
+from agent import Agent
 from setting_large_bp_grid import Setting
-
-import pprint
-
-# from advance_Algorithm import Algorithm_advance
-# from Visualization.advance_Algorithm import Algorithm_advance
-from Visualization.advance import Algorithm_advance
-
-# from advance_Algorithm_re import Algorithm_advance_re
-# from exp_Algorithm_re import Algorithm_exp_re
-
-from reference_match_rate import Property
-
-
-
-
+from advance import Algorithm_advance
 
 def main():
 
@@ -57,35 +25,16 @@ def main():
     for test in range(1):
 
         set = Setting()
-
         NODELIST, ARCLIST, Observation, map, grid = set.Infomation()
-
-        # refer = Property()
-        # reference = refer.reference
-
         GOAL_STATE = [0, 2]
-
         test = [grid, map, NODELIST] # , GOAL_STATE]
-
-
-
         marking_param = 1
-        
-        # env = Environment(grid, NODELIST, map)
         env = Environment(*test)
-        
         # agent = Agent(env, GOAL_STATE, NODELIST, map, grid)
         agent = Agent(env, marking_param, *test)
-
-
-
         STATE_HISTORY = []
         CrossRoad = []
-            
 
-            
-
-    
         for x in range(1): #5):
             print("=================== {} Steps\n===================".format(x))
             
@@ -184,28 +133,13 @@ def main():
             print("state_history : {}".format(STATE_HISTORY))
             
             print("Storage Stress : {}".format(Storage_Stress))
-            # print("Storage Stress LIST : {}".format(Node_A))
-            # print("Node s : {}".format(Node_s))
-            # print("Node A : {}".format(Node_A))
-            # print("Node B : {}".format(Node_B))
-            # print("Node C : {}".format(Node_C))
-            # print("Node D : {}".format(Node_D))
-            # print("Node g : {}".format(Node_g))
-
-            # print(Node_s)
-            # print(Node_g) # "O"
-            # print(Node_A)
-            # print(Node_B)
-            # print(Node_C)
-            # print(Node_D)
+            
             print("self.history_S = {}".format(Node_s))
             print("self.history_G = {}".format(Node_g))
             print("self.history_A = {}".format(Node_A))
             print("self.history_B = {}".format(Node_B))
             print("self.history_C = {}".format(Node_C))
             print("self.history_D = {}".format(Node_D))
-            # print(Node_g) # "O"
-            # pprint.pprint(Node_A)
             print("length Node s : {}".format(len(Node_s)))
             print("length Node A : {}".format(len(Node_A)))
             print("length Node B : {}".format(len(Node_B)))
@@ -219,8 +153,6 @@ def main():
             print("self.history_Cost_B = {}".format(Cost_B))
             print("self.history_Cost_C = {}".format(Cost_C))
             print("self.history_Cost_D = {}".format(Cost_D))
-            # print(Cost_g) # "O"
-            # pprint.pprint(Cost_A)
             print("length Cost S : {}".format(len(Cost_S)))
             print("length Cost O : {}".format(len(Cost_O)))
             print("length Cost A : {}".format(len(Cost_A)))

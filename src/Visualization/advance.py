@@ -3,7 +3,6 @@ import numpy as np
 from reference_match_rate import Property
 import pprint
 import random
-# from cal import Cal
 
 
 class Algorithm_advance():
@@ -109,15 +108,11 @@ class Algorithm_advance():
         while not self.done:
         
             print("\n-----{}Steps-----".format(self.COUNT+1))
-
-
             self.map_unexp_area = self.env.map_unexp_area(self.state)
             if self.map_unexp_area or self.FIRST:
                     self.FIRST = False
                     print("un explore area ! 🤖 ❓❓")
                 # if not self.TRIGAR:
-
-
                     if self.total_stress + self.stress >= 0:
                         "---- Add 1029 ----"
                         # self.total_stress += self.stress
@@ -130,46 +125,28 @@ class Algorithm_advance():
                             self.total_stress += 0
                         print(" TEST 1029 : {}".format(Arc[index-1]))
                         "---- Add 1029 ----"
-                        
-                        # self.TOTAL_STRESS_LIST.append(self.total_stress)
-
                     if self.NODELIST[self.state.row][self.state.column] in pre:
-
-                        # stress = 0
+                        
                         print(f"Total Stress:{self.total_stress}")
-                        # self.total_stress = 0
-                
                         index = Node.index(self.NODELIST[self.state.row][self.state.column])
-                        
-                        
-                        # test = x-sum_test
-                        
                         print("<{}> match !".format(self.NODELIST[self.state.row][self.state.column]))
                         print("事前のArc : {}".format(Arc[index]))
                         print("実際のArc : {}".format(self.total_stress)) # x))
                         self.SAVE_ARC.append(self.total_stress)
                         print("⚠️ 実際のアークの配列 : {}".format(self.SAVE_ARC))
-                        
-                        
                         # print("実際のアークの配列+現在地からの距離 : {}".format(self.SAVE_ARC_2))
-
-                        
                         print("Arc[index]:{}".format(float(Arc[index])))
-                        
-                        
                         print("----\n今の permission : {} 以内に発見\n----".format(PERMISSION[index][0]))
 
                         standard = []
                 
                         " -- Add 1029 --"
                         # try:
-                        #     # standard.append(round(test/int(Arc[index]), 2))
+                        #     # standard.append(round(test/int(Arc[index]), 2)) # 上で基準距離 = total_stress を計算しているのでいらない
                         #     standard.append(round(self.total_stress/float(Arc[index]), 2))
                         # except:
                         #     standard.append(0)
                         standard.append(self.total_stress)
-
-
                         print("standard【基準距離】 : {}".format(standard[0]))
 
                         if standard[0] != 0:
@@ -177,7 +154,6 @@ class Algorithm_advance():
                             # arc_s = round(1.0-standard[0], 2)
                             if arc_s > 2:
                                 arc_s = 1.0
-
                             # if arc_s == 0:
                             #     arc_s = 1.0
                         else:
@@ -189,8 +165,6 @@ class Algorithm_advance():
                         if self.NODELIST[self.state.row][self.state.column] == "g":
                             print("🤖 GOALに到達しました。")
                             GOAL = True
-                            # self.STATE_HISTORY.append(self.state)
-                            # self.STATE_HISTORY.append(self.state)
                             break
                         
                         ################################################
@@ -226,45 +200,13 @@ class Algorithm_advance():
                         self.Add_Advance = True
                         self.BPLIST.append(self.state)
 
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-
-
-                        # # add 1002 LandMarkを発見していることがわかるように追加
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
                         
                         # 一個前が1ならpopで削除
                         print("📂 Storage {}".format(self.BPLIST))
 
                         print("Storage append : {}".format(self.Storage))
                         length = len(self.BPLIST)
-
-                        "Add 1029"
-                        # self.total_stress = 0
-
-
-
-
-                        # BPLIST を保存
-                        # self.test_arc = []
-                        # self.test_arc = self.SAVE_ARC
-                        # print("test[0]:{}".format(self.test_arc[0]))
-                        # self.test_arc.pop(0)
                         
-                        # Node_num = 5
-                        # self.Storage_Stress = []
-                        # self.DEMO_LIST.clear()
-
                         NS = 0
                         NA = 0
                         NB = 0
@@ -276,72 +218,20 @@ class Algorithm_advance():
                             if bp not in self.Storage:
                                 self.Storage.append(bp)
                                 self.Storage_Stress.append(stress)
-
-                                # if self.NODELIST[self.state.row][self.state.column] == "A":
-                                #     self.Node_A.append(stress)
-                        
+                                
                         "-- ここから変更 --"
                         if self.NODELIST[self.state.row][self.state.column] == "s":
-                            
-                            # self.Node_s.append(stress)
-                            # self.Node_A.append(0)
-                            # self.Node_B.append(0)
-                            # self.Node_C.append(0)
-                            # self.Node_D.append(0)
-                            # self.Node_g.append(0)
                             NS = stress
                         elif self.NODELIST[self.state.row][self.state.column] == "A":
-                            # self.Node_s.append(0)
-                            
-                            # self.Node_A.append(stress)
-                            # self.Node_B.append(0)
-                            # self.Node_C.append(0)
-                            # self.Node_D.append(0)
-                            # self.Node_g.append(0)
                             NA = stress
                         elif self.NODELIST[self.state.row][self.state.column] == "B":
-                            # self.Node_s.append(0)
-                            # self.Node_A.append(0)
-                            
-                            # self.Node_B.append(stress)
-                            # self.Node_C.append(0)
-                            # self.Node_D.append(0)
-                            # self.Node_g.append(0)
                             NB = stress
                         elif self.NODELIST[self.state.row][self.state.column] == "C":
-                            # self.Node_s.append(0)
-                            # self.Node_A.append(0)
-                            # self.Node_B.append(0)
-                            
-                            # self.Node_C.append(stress)
-                            # self.Node_D.append(0)
-                            # self.Node_g.append(0)
                             NC = stress
                         elif self.NODELIST[self.state.row][self.state.column] == "D":
-                            # self.Node_s.append(0)
-                            # self.Node_A.append(0)
-                            # self.Node_B.append(0)
-                            # self.Node_C.append(0)
-                            
-                            # self.Node_D.append(stress)
-                            # self.Node_g.append(0)
                             ND = stress
                         elif self.NODELIST[self.state.row][self.state.column] == "O": #"g":
-                            # self.Node_s.append(0)
-                            # self.Node_A.append(0)
-                            # self.Node_B.append(0)
-                            # self.Node_C.append(0)
-                            # self.Node_D.append(0)
-                            
-                            # self.Node_g.append(stress)
                             NO = stress
-                        # else:
-                        #     self.Node_s.append(0)
-                        #     self.Node_A.append(0)
-                        #     self.Node_B.append(0)
-                        #     self.Node_C.append(0)
-                        #     self.Node_D.append(0)
-                        #     self.Node_g.append(0)
 
                         "--test--"
                         self.Node_s.append(NS)
@@ -364,39 +254,15 @@ class Algorithm_advance():
                         self.WEIGHT_CROSS_B.append(0)
                         self.WEIGHT_CROSS_C.append(0)
                         self.WEIGHT_CROSS_D.append(0)
-
-                        # "--test--"
-                        # self.Cost_S.append(0)
-                        # self.Cost_A.append(0)
-                        # self.Cost_B.append(0)
-                        # self.Cost_C.append(0)
-                        # self.Cost_D.append(0)
-                        # self.Cost_O.append(0)
-
-                        # for bp, arc in zip(self.BPLIST, self.SAVE_ARC):
-                            # if bp in self.Storage:
-                                # self.Storage_Arc.append(sum(self.test_arc))
-                                # try:
-                                #     # self.test_arc.pop(0)
-                                #     print("test arc : {}".format(self.test_arc))
-                                # except:
-                                #     continue
-
-                        # for bp, stress
-                        # self.Storage_Arc = self.Cal.caluculate(DEMO)
                         
                         print("Storage append : {}".format(self.Storage))
                         print("Storage Stress append : {}".format(self.Storage_Stress))
                         print("Storage Arc : {}".format(self.Storage_Arc))
 
-
-
                         self.STATE_HISTORY.append(self.state)
                         self.TOTAL_STRESS_LIST.append(self.total_stress)
                         # self.TOTAL_STRESS_LIST.append(abs(1.0-self.total_stress))
                         # self.TOTAL_STRESS_LIST.append(arc_s)
-
-
 
                         "---- comment out 1029 ----"
                         # self.Node_s.append(0)
@@ -406,37 +272,9 @@ class Algorithm_advance():
                         # self.Node_D.append(0)
                         # self.Node_g.append(0)
                         "---- comment out 1029 ----"
-
-                        
-                        
-                        # # Add 1028
-                        # # if len(self.Storage_Stress) <= 1:
-                        # Node_num = 5
-                        # # DEMO_LIST = self.Storage_Stress
-                        # # for x in range(Node_num-len(self.DEMO_LIST)): # self.Storage_Stress)): # Node数-リストの中身の数
-                        # #     self.DEMO_LIST.append(0.0)
-                        # # print("TYPE:{}".format(type(self.Storage_Stress)))
-                        # # print("DEMO LIST : {}".format(self.DEMO_LIST))
-                        # self.Storage_Stress_LIST.append(self.DEMO_LIST) # self.Storage_Stress)
-                        # print("Storage Stress LIST : {}".format(self.Storage_Stress_LIST))
-
-                        # # # self.DEMO_LIST.clear()
-                        # # for x in range(Node_num-len(self.DEMO_LIST)): # self.Storage_Stress)): # Node数-リストの中身の数
-                        # #     try:
-                        # #         self.DEMO_LIST.pop(0.0)
-                        # #     except:
-                        # #         pass
-
-
                         "Add 1029"
                         self.total_stress = 0
                         # self.total_stress -= arc_s
-
-
-
-
-                        
-
                     else:
 
                         if self.grid[self.state.row][self.state.column] == 5:
@@ -465,18 +303,9 @@ class Algorithm_advance():
 
                         print("🪧 NODE : ❌")
                         print("no match!")
-                        # stress += 1
-                        # self.Add_Advance = False
 
-
-                    
                     print("PERMISSION : {}".format(PERMISSION[index][0]))
-                    # x += 1
-
                     print("Δs = {}".format(self.stress))
-                    
-                    # if self.total_stress + self.stress >= 0:
-                    #     self.total_stress += self.stress
 
                     # if self.total_stress >= permission: # self.Stressfull:
                     # if self.total_stress >= PERMISSION[index][0]               +x:  # 追加
@@ -487,23 +316,10 @@ class Algorithm_advance():
                         print("=================")
                         print("FULL ! MAX! 🔙⛔️")
                         print("=================")
-                        ##### Add 1024
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        # self.STATE_HISTORY.append(self.state)
-                        #####
-
-                        # STATE_HISTORY.append(state)
                         self.COUNT += 1
                         self.BPLIST.append(self.state) # Arcを計算する為に、最初だけ必要
                         self.Add_Advance = True
-                        
-                        # continue
                         break
-
-                # else:
-                #     print("================\n🤖 何も処理しませんでした\n================")
-                #     break
             else:
                 print("================\n🤖 何も処理しませんでした__2\n================")
                 print("マーキング = 1 の探索済みエリア")
@@ -541,17 +357,10 @@ class Algorithm_advance():
             self.WEIGHT_CROSS_B.append(0)
             self.WEIGHT_CROSS_C.append(0)
             self.WEIGHT_CROSS_D.append(0)
-
-            # # Add 1028
-            # self.Storage_Stress_LIST.append(self.Storage_Stress)
-            # print("Storage Stress LIST : {}".format(self.Storage_Stress_LIST))
-
-
             
             self.action, self.Reverse, self.TRIGAR = self.agent.policy_advance(self.state, self.TRIGAR, self.action)
             if self.TRIGAR:
                 self.env.mark(self.state, self.TRIGAR)
-                # self.STATE_HISTORY.append(self.state)
                 print("終了します")
                 # self.TRIGAR = False
 
@@ -575,9 +384,6 @@ class Algorithm_advance():
 
         print("🍏 ⚠️ 🍐 Action : {}".format(self.action))
         print("TRIGAR : {}".format(self.TRIGAR))
-
-        # print("state_history : {}".format(self.STATE_HISTORY))
-
         print("CrossRoad : {}\n\n\n".format(self.CrossRoad))
 
         return self.total_stress, self.STATE_HISTORY, self.state, self.TRIGAR, self.OBS, self.BPLIST, self.action, self.Add_Advance, GOAL, self.SAVE_ARC, self.CrossRoad, self.Storage, self.Storage_Stress, self.TOTAL_STRESS_LIST, self.Node_s, self.Node_A, self.Node_B, self.Node_C, self.Node_D, self.Node_g, self.Cost_S, self.Cost_O, self.Cost_A, self.Cost_B, self.Cost_C, self.Cost_D, self.WEIGHT_CROSS_S, self.WEIGHT_CROSS_O, self.WEIGHT_CROSS_A, self.WEIGHT_CROSS_B, self.WEIGHT_CROSS_C, self.WEIGHT_CROSS_D # , permission

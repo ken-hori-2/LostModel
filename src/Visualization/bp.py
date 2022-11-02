@@ -2,8 +2,6 @@
 import math
 from reference_match_rate import Property
 
-# from cal import Cal
-
 class Algorithm_bp():
 
     
@@ -43,7 +41,7 @@ class Algorithm_bp():
         self.SAVE = []
             
 
-    def BP(self, STATE_HISTORY, state, TRIGAR, OBS, BPLIST, action, Add_Advance, total_stress, SAVE_ARC, TOTAL_STRESS_LIST, Node_s, Node_A, Node_B, Node_C, Node_D, Node_g, Cost_S, Cost_O, Cost_A, Cost_B, Cost_C, Cost_D):
+    def BP(self, STATE_HISTORY, state, TRIGAR, OBS, BPLIST, action, Add_Advance, total_stress, SAVE_ARC, TOTAL_STRESS_LIST, Node_s, Node_A, Node_B, Node_C, Node_D, Node_g, Cost_S, Cost_O, Cost_A, Cost_B, Cost_C, Cost_D, WEIGHT_CROSS_S, WEIGHT_CROSS_O, WEIGHT_CROSS_A, WEIGHT_CROSS_B, WEIGHT_CROSS_C, WEIGHT_CROSS_D):
         self.STATE_HISTORY = STATE_HISTORY
         self.state = state
         self.TRIGAR = TRIGAR
@@ -78,6 +76,13 @@ class Algorithm_bp():
         self.Cost_C = Cost_C
         self.Cost_D = Cost_D
 
+        self.WEIGHT_CROSS_S = WEIGHT_CROSS_S
+        self.WEIGHT_CROSS_O = WEIGHT_CROSS_O
+        self.WEIGHT_CROSS_A = WEIGHT_CROSS_A
+        self.WEIGHT_CROSS_B = WEIGHT_CROSS_B
+        self.WEIGHT_CROSS_C = WEIGHT_CROSS_C
+        self.WEIGHT_CROSS_D = WEIGHT_CROSS_D
+
         while not self.done:
         
             print("\n-----{}Steps-----".format(self.COUNT+1))
@@ -100,7 +105,7 @@ class Algorithm_bp():
                         print("📂 Storage {}".format(self.BPLIST))
                         
                         # callback
-                        self.next_position = self.agent.back_position(self.BPLIST, self.w, self.Arc)
+                        self.next_position, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
                         # self.next_position, w, Arc, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
 
 
@@ -112,56 +117,52 @@ class Algorithm_bp():
 
 
                         "--test--"
-                        # try:
-                        #     self.Cost_S.append(0)
-                        #     for i in range(len(Arc)):
-                        #         if i == 0:
-                        #             self.Cost_O.append(Arc[i])
-                        #         elif i == 1:
-                        #             self.Cost_A.append(Arc[i])
-                        #         elif i == 2:
-                        #             self.Cost_B.append(Arc[i])
-                        #         elif i == 3:
-                        #             self.Cost_C.append(Arc[i])
-                        #         elif i == 4:
-                        #             self.Cost_D.append(0)
-                        #     # self.Cost_S.append(0) # Arc)
-                        #     # self.Cost_O.append(Arc[0]) # Arc)
-                        #     # self.Cost_A.append(Arc[1])
-                        #     # self.Cost_B.append(Arc[2])
-                        #     # self.Cost_C.append(Arc[3])
-                        #     # self.Cost_D.append(0) #Arc[3])
-                        # except:
-                        #     print("error")
-                        #     # self.Cost_S.append(0)
-                        #     # self.Cost_A.append(0)
-                        #     # self.Cost_B.append(0)
-                        #     # self.Cost_C.append(0)
-                        #     # self.Cost_D.append(0)
-                        #     # self.Cost_O.append(0)
                         CS = 0
                         CA = 0
                         CB = 0
                         CC = 0
                         CD = 0
                         CO = 0
+                        WCS = 0
+                        WCA = 0
+                        WCB = 0
+                        WCC = 0
+                        WCD = 0
+                        WCO = 0
                         # self.Cost_S.append(0)
                         for i in range(len(self.Arc)):
                             if i == 0:
-                                # self.Cost_O.append(Arc[i])
                                 CO = self.Arc[i] 
+                                # WCO = WEIGHT_CROSS[i]
                             elif i == 1:
-                                # self.Cost_A.append(Arc[i])
                                 CA = self.Arc[i]
+                                # WCA = WEIGHT_CROSS[i]
                             elif i == 2:
-                                # self.Cost_B.append(Arc[i])
                                 CB = self.Arc[i] 
+                                # WCB = WEIGHT_CROSS[i]
                             elif i == 3:
-                                # self.Cost_C.append(Arc[i])
-                                CC = self.Arc[i]  
+                                CC = self.Arc[i] 
+                                # WCC = WEIGHT_CROSS[i]
                             elif i == 4:
-                                # self.Cost_D.append(0)
                                 CD = self.Arc[i]
+                                # WCD = WEIGHT_CROSS[i]
+
+                        for i in range(len(WEIGHT_CROSS)):
+                            if i == 0:
+                                # CO = self.Arc[i] 
+                                WCO = WEIGHT_CROSS[i]
+                            elif i == 1:
+                                # CA = self.Arc[i]
+                                WCA = WEIGHT_CROSS[i]
+                            elif i == 2:
+                                # CB = self.Arc[i] 
+                                WCB = WEIGHT_CROSS[i]
+                            elif i == 3:
+                                # CC = self.Arc[i] 
+                                WCC = WEIGHT_CROSS[i] 
+                            elif i == 4:
+                                # CD = self.Arc[i]
+                                WCD = WEIGHT_CROSS[i]
 
                         self.Cost_S.append(CS)
                         self.Cost_A.append(CA)
@@ -169,6 +170,13 @@ class Algorithm_bp():
                         self.Cost_C.append(CC)
                         self.Cost_D.append(CD)
                         self.Cost_O.append(CO)
+
+                        self.WEIGHT_CROSS_S.append(WCS)
+                        self.WEIGHT_CROSS_O.append(WCO)
+                        self.WEIGHT_CROSS_A.append(WCA)
+                        self.WEIGHT_CROSS_B.append(WCB)
+                        self.WEIGHT_CROSS_C.append(WCC)
+                        self.WEIGHT_CROSS_D.append(WCD)
 
                         # self.Cost_S.append(Arc)
                         # self.Cost_O.append(WEIGHT_CROSS)
@@ -228,6 +236,13 @@ class Algorithm_bp():
                         self.Cost_C.append(CC)
                         self.Cost_D.append(CD)
                         self.Cost_O.append(CO)
+
+                        self.WEIGHT_CROSS_S.append(WCS)
+                        self.WEIGHT_CROSS_O.append(WCO)
+                        self.WEIGHT_CROSS_A.append(WCA)
+                        self.WEIGHT_CROSS_B.append(WCB)
+                        self.WEIGHT_CROSS_C.append(WCC)
+                        self.WEIGHT_CROSS_D.append(WCD)
                         
                         
                         # 0921 統合テスト
@@ -326,7 +341,7 @@ class Algorithm_bp():
                         self.BACK = False
                         
                         # callback
-                        self.next_position = self.agent.back_position(self.BPLIST, self.w, self.Arc)
+                        self.next_position, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
 
                         # self.next_position, w, Arc, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
 
@@ -343,31 +358,46 @@ class Algorithm_bp():
                         CC = 0
                         CD = 0
                         CO = 0
+                        WCS = 0
+                        WCA = 0
+                        WCB = 0
+                        WCC = 0
+                        WCD = 0
+                        WCO = 0
                         # self.Cost_S.append(0)
                         for i in range(len(self.Arc)):
                             if i == 0:
-                                # self.Cost_O.append(Arc[i])
-                                CO = self.Arc[i]  
+                                CO = self.Arc[i] 
+                                # WCO = WEIGHT_CROSS[i] 
                             elif i == 1:
-                                # self.Cost_A.append(Arc[i])
                                 CA = self.Arc[i]
+                                # WCA = WEIGHT_CROSS[i]
                             elif i == 2:
-                                # self.Cost_B.append(Arc[i])
                                 CB = self.Arc[i]
+                                # WCB = WEIGHT_CROSS[i]
                             elif i == 3:
-                                # self.Cost_C.append(Arc[i])
-                                CC = self.Arc[i]   
+                                CC = self.Arc[i] 
+                                # WCC = WEIGHT_CROSS[i]
                             elif i == 4:
-                                # self.Cost_D.append(0)
                                 CD = self.Arc[i]
-                            # elif i == 5:
-                                    
-                            # self.Cost_S.append(0) # Arc)
-                            # self.Cost_O.append(Arc[0]) # Arc)
-                            # self.Cost_A.append(Arc[1])
-                            # self.Cost_B.append(Arc[2])
-                            # self.Cost_C.append(Arc[3])
-                            # self.Cost_D.append(0) #Arc[3])
+                                # WCD = WEIGHT_CROSS[i]
+
+                        for i in range(len(WEIGHT_CROSS)):
+                            if i == 0:
+                                # CO = self.Arc[i] 
+                                WCO = WEIGHT_CROSS[i]
+                            elif i == 1:
+                                # CA = self.Arc[i]
+                                WCA = WEIGHT_CROSS[i]
+                            elif i == 2:
+                                # CB = self.Arc[i] 
+                                WCB = WEIGHT_CROSS[i]
+                            elif i == 3:
+                                # CC = self.Arc[i] 
+                                WCC = WEIGHT_CROSS[i] 
+                            elif i == 4:
+                                # CD = self.Arc[i]
+                                WCD = WEIGHT_CROSS[i]
                         # except:
                         #     print("error")
                         "-- Add 1031 --"
@@ -377,6 +407,13 @@ class Algorithm_bp():
                         self.Cost_C.append(CC)
                         self.Cost_D.append(CD)
                         self.Cost_O.append(CO)
+
+                        self.WEIGHT_CROSS_S.append(WCS)
+                        self.WEIGHT_CROSS_O.append(WCO)
+                        self.WEIGHT_CROSS_A.append(WCA)
+                        self.WEIGHT_CROSS_B.append(WCB)
+                        self.WEIGHT_CROSS_C.append(WCC)
+                        self.WEIGHT_CROSS_D.append(WCD)
                             
                         # self.Cost_S.append(Arc)
                         # self.Cost_O.append(WEIGHT_CROSS)
@@ -452,6 +489,13 @@ class Algorithm_bp():
                         self.Cost_C.append(CC)
                         self.Cost_D.append(CD)
                         self.Cost_O.append(CO)
+
+                        self.WEIGHT_CROSS_S.append(WCS)
+                        self.WEIGHT_CROSS_O.append(WCO)
+                        self.WEIGHT_CROSS_A.append(WCA)
+                        self.WEIGHT_CROSS_B.append(WCB)
+                        self.WEIGHT_CROSS_C.append(WCC)
+                        self.WEIGHT_CROSS_D.append(WCD)
                         
 
 
@@ -508,6 +552,13 @@ class Algorithm_bp():
                 self.Cost_C.append(CC) #0)
                 self.Cost_D.append(CD) #0)
                 self.Cost_O.append(CO) #0)
+
+                self.WEIGHT_CROSS_S.append(WCS)
+                self.WEIGHT_CROSS_O.append(WCO)
+                self.WEIGHT_CROSS_A.append(WCA)
+                self.WEIGHT_CROSS_B.append(WCB)
+                self.WEIGHT_CROSS_C.append(WCC)
+                self.WEIGHT_CROSS_D.append(WCD)
             print(f"Total Stress:{self.total_stress}")
 
             print("TRIGAR : {}".format(self.TRIGAR))
@@ -538,4 +589,4 @@ class Algorithm_bp():
         # print("state_history : {}".format(self.STATE_HISTORY))
         self.COUNT = 0
 
-        return self.total_stress, self.STATE_HISTORY, self.state, self.OBS, self.BackPosition_finish, self.TOTAL_STRESS_LIST, self.Node_s, self.Node_A, self.Node_B, self.Node_C, self.Node_D, self.Node_g, self.Cost_S, self.Cost_O, self.Cost_A, self.Cost_B, self.Cost_C, self.Cost_D
+        return self.total_stress, self.STATE_HISTORY, self.state, self.OBS, self.BackPosition_finish, self.TOTAL_STRESS_LIST, self.Node_s, self.Node_A, self.Node_B, self.Node_C, self.Node_D, self.Node_g, self.Cost_S, self.Cost_O, self.Cost_A, self.Cost_B, self.Cost_C, self.Cost_D, self.WEIGHT_CROSS_S, self.WEIGHT_CROSS_O, self.WEIGHT_CROSS_A, self.WEIGHT_CROSS_B, self.WEIGHT_CROSS_C, self.WEIGHT_CROSS_D

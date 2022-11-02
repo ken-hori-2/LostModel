@@ -1,9 +1,6 @@
-from cgi import test
-from tkinter.messagebox import NO
 import numpy as np
 from sklearn import preprocessing
 import random
-
 from reference_match_rate import Property
 import math
 
@@ -485,7 +482,7 @@ class Agent():
 
         
 
-        return next_position # , w, Arc_INVERSE, WEIGHT_CROSS
+        return next_position, WEIGHT_CROSS # , w, Arc_INVERSE, WEIGHT_CROSS
 
     def back_end(self, BPLIST, next_position, w, OBS):
         
