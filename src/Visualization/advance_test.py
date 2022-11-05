@@ -49,6 +49,7 @@ class Algorithm_advance():
 
         self.SIGMA_LIST = []
         self.sigma = 0
+        self.test_s = 0
 
     
     
@@ -116,26 +117,34 @@ class Algorithm_advance():
                     self.FIRST = False
                     print("un explore area ! 🤖 ❓❓")
                 # if not self.TRIGAR:
-                    if self.total_stress + self.stress >= 0:
+                    # if self.total_stress + self.stress >= 0:
+                    if self.test_s + self.stress >= 0:
                         "---- Add 1029 ----"
                         # self.total_stress += self.stress
                         # if self.NODELIST[self.state.row][self.state.column] in pre:
                         #     index = Node.index(self.NODELIST[self.state.row][self.state.column])
                             
                         try:
-                            self.total_stress += round(self.stress/float(Arc[index-1]), 3) # 2)
+                            # self.total_stress += round(self.stress/float(Arc[index-1]), 3) # 2)
+                            self.test_s += round(self.stress/float(Arc[index-1]), 3) # 2)
+                            self.total_stress += round(self.stress/float(Arc[index-1]), 3)
                         except:
+                            # self.total_stress += 0
+                            self.test_s += 0
                             self.total_stress += 0
                         print(" TEST 1029 : {}".format(Arc[index-1]))
                         "---- Add 1029 ----"
                     if self.NODELIST[self.state.row][self.state.column] in pre:
                         
-                        print(f"Total Stress:{self.total_stress}")
+                        # print(f"Total Stress:{self.total_stress}")
+                        print(f"Arc Stress:{self.test_s}")
                         index = Node.index(self.NODELIST[self.state.row][self.state.column])
                         print("<{}> match !".format(self.NODELIST[self.state.row][self.state.column]))
                         print("事前のArc : {}".format(Arc[index]))
-                        print("実際のArc : {}".format(self.total_stress)) # x))
-                        self.SAVE_ARC.append(self.total_stress)
+                        # print("実際のArc : {}".format(self.total_stress)) # x))
+                        print("実際のArc : {}".format(self.test_s))
+                        # self.SAVE_ARC.append(self.total_stress)
+                        self.SAVE_ARC.append(self.test_s)
                         print("⚠️ 実際のアークの配列 : {}".format(self.SAVE_ARC))
                         # print("実際のアークの配列+現在地からの距離 : {}".format(self.SAVE_ARC_2))
                         print("Arc[index]:{}".format(float(Arc[index])))
@@ -149,11 +158,16 @@ class Algorithm_advance():
                         #     standard.append(round(self.total_stress/float(Arc[index]), 2))
                         # except:
                         #     standard.append(0)
-                        standard.append(self.total_stress)
+                        # standard.append(self.total_stress)
+                        standard.append(self.test_s)
                         print("standard【基準距離】 : {}".format(standard[0]))
 
                         if standard[0] != 0:
+                            "-- これがいずれのΔSnodeの式 今はArc に対するΔSのみ --"
+                            
                             arc_s = round(abs(1.0-standard[0]), 2)
+
+                            
                             # arc_s = round(1.0-standard[0], 2)
                             if arc_s > 2:
                                 arc_s = 1.0
@@ -264,6 +278,8 @@ class Algorithm_advance():
 
                         self.STATE_HISTORY.append(self.state)
                         self.TOTAL_STRESS_LIST.append(self.total_stress)
+
+
                         # self.TOTAL_STRESS_LIST.append(abs(1.0-self.total_stress))
                         # self.TOTAL_STRESS_LIST.append(arc_s)
 
@@ -276,17 +292,25 @@ class Algorithm_advance():
                         # self.Node_g.append(0)
                         "---- comment out 1029 ----"
                         "Add 1029"
-                        self.total_stress = 0
 
-                        # "-- Total Stress を発見した(1-Nodeに対するストレス)分だけ減少させる --"
-                        # self.sigma += self.total_stress
-                        # # self.sigma = self.total_stress
+                        "-- comment out 1104 --"
                         # self.total_stress = 0
-                        # self.sigma -= (1-arc_s)
-                        # self.SIGMA_LIST.append(self.sigma)
-                        # print("SIGMA : {}".format(self.SIGMA_LIST))
-                        # # self.total_stress = self.sigma
-                        # "--------------------------------------------------------------"
+                        "-- comment out 1104 --" # これ以下はストレスの減少のテスト
+
+                        # self.total_stress += self.test_s
+                        self.test_s = 0
+                        "-- Total Stress を発見した(1-Nodeに対するストレス)分だけ減少させる --"
+                        # self.sigma += self.total_stress
+                        # self.sigma = self.total_stress
+                        # self.total_stress = 0
+                        print("total stress : {}".format(self.total_stress))
+                        self.total_stress -= (1-arc_s)
+                        self.SIGMA_LIST.append(self.total_stress)
+                        print("SIGMA : {}".format(self.SIGMA_LIST))
+                        # self.total_stress = self.sigma
+                        # self.TOTAL_STRESS_LIST.append(self.total_stress)
+                        print("total stress : {}".format(self.total_stress))
+                        "--------------------------------------------------------------"
                     else:
 
                         if self.grid[self.state.row][self.state.column] == 5:

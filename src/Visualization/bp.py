@@ -212,7 +212,11 @@ class Algorithm_bp():
                         print(f"🤖 State:{self.state}")
 
                         
-                        self.total_stress = 0
+                        # self.total_stress = 0
+                        "-- test1104 --"
+                        delta_s = self.Observation[self.state.row][self.state.column]
+                        self.total_stress -= (1-delta_s)
+                        "-- test1104 --"
 
                         # Add 1025
                         # self.TOTAL_STRESS_LIST.append(self.total_stress)
@@ -457,7 +461,14 @@ class Algorithm_bp():
 
                         
 
-                        self.total_stress = 0
+                        # self.total_stress = 0
+                        "-- test1104 --"
+                        print("⚠️ total : {}".format(self.total_stress))
+                        delta_s = self.Observation[self.state.row][self.state.column]
+                        self.total_stress -= (1-delta_s)
+                        print("⚠️ delta_s : {}".format(delta_s))
+                        print("⚠️ total : {}".format(self.total_stress))
+                        "-- test1104 --"
 
                         # Add 1025
                         # self.TOTAL_STRESS_LIST.append(self.total_stress)

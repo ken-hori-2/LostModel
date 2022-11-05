@@ -43,7 +43,14 @@ class Algorithm_exp():
         self.grid = grid
         self.CrossRoad = CrossRoad
         GOAL = False
-        self.total_stress = 0 # total_stress # 0
+        
+        
+        "-- test1104 --"
+        # self.total_stress = 0 # total_stress # 0
+        self.total_stress = total_stress
+        "-- test1104 --"
+
+
         self.stress = 0
         # 初期
         index = Node.index("s")
@@ -96,7 +103,13 @@ class Algorithm_exp():
                 index = Node.index(self.NODELIST[self.state.row][self.state.column])
                 print("<{}> match !".format(self.NODELIST[self.state.row][self.state.column]))
                 print("事前のArc : {}".format(Arc[index]))
-                self.total_stress = 0
+                # self.total_stress = 0
+                "-- test1104 --"
+                # delta_s = self.Observation[self.state.row][self.state.column]
+                # self.total_stress -= (1-delta_s)
+                "-- test1104 --"
+
+
             else:
                 if self.total_stress + self.stress >= 0:
                     self.total_stress += self.stress
@@ -117,7 +130,13 @@ class Algorithm_exp():
                 print("=================")
                 self.state = self.NODE_POSITION
                 print(f"🤖 State:{self.state}")
-                self.total_stress = 0
+                # self.total_stress = 0
+                "-- test1104 --"
+                # delta_s = self.Observation[self.state.row][self.state.column]
+                # self.total_stress -= (1-delta_s)
+                "-- test1104 --"
+
+
             print(f"Total Stress:{self.total_stress}")
             print("trigar : {}".format(self.TRIGAR))
 
@@ -125,6 +144,7 @@ class Algorithm_exp():
             self.STATE_HISTORY.append(self.state)
             self.TOTAL_STRESS_LIST.append(self.total_stress)
             # self.TOTAL_STRESS_LIST.append(abs(1.0-self.total_stress))
+
             self.STATE_HISTORY.append(self.state)
             self.total_stress = round(random.uniform(2.0,2.5), 3) # 2 # 10
             self.TOTAL_STRESS_LIST.append(self.total_stress) # 分岐先を探索した前提
@@ -171,7 +191,13 @@ class Algorithm_exp():
                 print("=================")
                 self.state = self.NODE_POSITION
                 print(f"🤖 State:{self.state}")
-                self.total_stress = 0
+                # self.total_stress = 0
+                "-- test1104 --"
+                # delta_s = self.Observation[self.state.row][self.state.column]
+                # self.total_stress -= (1-delta_s)
+                "-- test1104 --"
+
+
             print("All explore : {}".format(self.All_explore))
             if self.All_explore:
                 self.env.mark_all(state)
@@ -192,7 +218,7 @@ class Algorithm_exp():
             if self.COUNT > 150: # 50: # 150:
                 break
             self.COUNT += 1
-            
+
         if self.done:
             print("GOAL")
 

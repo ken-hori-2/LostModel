@@ -61,6 +61,8 @@ class Anim():
 
             plt.plot([x], [y], marker="s", color='grey', markersize = 18)
             # plt.plot([x], [y], marker="s", color='grey', label="road", markersize = 18)
+            if t == 0:
+                plt.scatter(0, -20, marker="s", color='grey', label="Path")
 
 
         LandMark = [[27, 8], [22, 8], [18, 8], [13, 8], [9, 8], [5, 8],  [0, 8]]
@@ -89,7 +91,8 @@ class Anim():
             
             # Add 1027
             if t == 0:
-                plt.plot([x], [y], marker="s", color='green', label="Node", markersize = 10, alpha = 0.5)
+                # plt.plot([x], [y], marker="s", color='green', label="Node", markersize = 10, alpha = 0.5)
+                plt.scatter(0, -20, marker="s", color='green', label="Node")
                 # plt.plot([x], [y], marker="s", color='blue', label="Node", markersize = 18, alpha = 0.5)
 
         
@@ -162,6 +165,7 @@ class Anim():
                 
                 # Add 1027
                 # line, = plt.plot(x, y, marker="o", color='r', label="agent", markersize = 10, alpha = 0.5)
+                plt.scatter(0, -20, marker="o", color='r', label="agent") # , markersize = 8)
 
 
 
