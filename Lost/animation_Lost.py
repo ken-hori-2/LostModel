@@ -172,14 +172,16 @@ class Anim():
                 #     # if state[0] == prev_state[0] == next_state[0] == prev2[0] == prev3[0] == prev4[0] == prev5[0] == prev6[0] == prev7[0] == prev8[0]:
                 #     #     line, = plt.plot(x, y, marker="s", color='y', markersize = 18, alpha = 0.5)
                 #     # else:
-                        line, = plt.plot(x, y, marker="o", color='r', markersize = 15, alpha = 0.5)
+                        # line, = plt.plot(x, y, marker="o", color='r', markersize = 15, alpha = 0.5)
+                        line, = plt.plot(x, y, marker="o", color='r', markersize = 8)
 
                    
                 # else:
                 #     line, = plt.plot(x, y, marker="o", color='r', markersize = 15, alpha = 0.5)
             except:
                 print("エラー(初回)")
-                line, = plt.plot(x, y, marker="s", color='r', markersize = 15, alpha = 0.5)
+                # line, = plt.plot(x, y, marker="s", color='r', markersize = 15, alpha = 0.5)
+                line, = plt.plot(x, y, marker="s", color='r', markersize = 8)
             self.ims.append([line] + [title])
             if t == 0:
                 self.ims.append([line] + [title])
@@ -229,7 +231,10 @@ if __name__ == "__main__":
     STATE_HISTORY = [[12, 8], [12, 8], [12, 8], [22, 8], [22, 8], [22, 8], [22, 8], [22, 8], [22, 9], [22, 10], [22, 11], [22, 8], [21, 8], [20, 8], [19, 8], [22, 8], [22, 7], [22, 6], [22, 5], [22, 8], [23, 8], [24, 8], [25, 8], [22, 8]]
     STATE_HISTORY = [[12, 8], [12, 8], [12, 8], [22, 8], [22, 8], [22, 8], [22, 8], [22, 8], [22, 9], [22, 10], [22, 11], [22, 8], [22, 7], [22, 6], [22, 5], [22, 8], [23, 8], [24, 8], [25, 8], [22, 8]]
 
-
+    STATE_HISTORY = [[12, 8], [12, 8], [12, 8], [22, 8], [22, 8], [22, 8], [22, 8], [22, 8], [22, 9], [22, 10], [22, 11], [22, 8], [22, 7], [22, 6], [22, 5], [22, 8], [23, 8], [24, 8], [25, 8], [22, 8]]
+    STATE_HISTORY = [[12, 8], [12, 8], [12, 8], [22, 8], [22, 8], [22, 8], [22, 8], [22, 8], [22, 7], [22, 6], [22, 5], [22, 8], [23, 8], [24, 8], [25, 8], [22, 8], [22, 9], [22, 10], [22, 11], [22, 8]]
+    STATE_HISTORY = [[12, 8], [12, 8], [12, 8], [22, 8], [22, 8], [22, 8], [22, 8], [22, 8], [22, 7], [22, 6], [22, 5], [22, 8], [22, 9], [22, 10], [22, 11], [22, 8], [23, 8], [24, 8], [25, 8], [22, 8]]
+    
     Env_Anim = Anim(STATE_HISTORY)
 
     print("STATE_HISTORY:{}".format(Env_Anim.state_history))

@@ -134,9 +134,12 @@ class Agent_actions():
         self.Value = [0]*self.action_length # 4
 
         ######### データセット #########
+        # self.Value[2] = 2 # LEFT
+        # self.Value[0] = 3 # UP
+        # self.Value[3] = 5 # RIGHT
         self.Value[2] = 2 # LEFT
         self.Value[0] = 3 # UP
-        self.Value[3] = 5 # RIGHT
+        self.Value[3] = 0 # RIGHT
         ##############################
 
 
@@ -182,7 +185,7 @@ class Agent_actions():
         print("\n=============\n ⚠️ 結果の保存 \n=============\n")
         
         
-        if action == self.env.actions[0]:
+        if action == self.env.actions[0]: # UP
             print("⚡️ UP Rt = 1")
 
             self.Episode_0[0].append(action)
@@ -191,7 +194,7 @@ class Agent_actions():
             print("🔑 [⬆️　(1) , ⬇️　(-1) , ⬅️　(2) , ⬆️　(-2) ], [Rt] : ") # {}".format(self.Episode_0))
             pprint.pprint(self.Episode_0)
            
-        elif action == self.env.actions[2]:
+        elif action == self.env.actions[2]: # LEFT
             print("⚡️ LEFT Rt = 1")
 
             self.Episode_0[0].append(action)

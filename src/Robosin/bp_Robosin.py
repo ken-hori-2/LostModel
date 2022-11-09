@@ -1,6 +1,6 @@
 
 import math
-from reference_match_rate import Property
+from reference_match_rate_Robosin import Property
 
 class Algorithm_bp():
 
@@ -48,11 +48,18 @@ class Algorithm_bp():
         self.OBS = OBS
         self.BPLIST = BPLIST
         self.Advance_action = action
+        # test
+        # self.lost = False
         self.bf = True
         self.state_history_first = True
         self.Add_Advance = Add_Advance
+
+        # add 0929
+        # self.TRIGAR_REVERSE = False
+        # add 0929
         self.total_stress = total_stress
         self.SAVE_ARC = SAVE_ARC
+        # self.Storage_Arc = []
         self.first_pop = True
         self.BackPosition_finish = False
         pre, Node, Arc, Arc_sum, PERMISSION = self.refer.reference()
@@ -83,236 +90,198 @@ class Algorithm_bp():
         self.WEIGHT_CROSS_C = WEIGHT_CROSS_C
         self.WEIGHT_CROSS_D = WEIGHT_CROSS_D
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        self.first_pop = True
+
+
+
+        self.BackPosition_finish = False
+
+
+        pre, Node, Arc, Arc_sum, PERMISSION = self.refer.reference()
+
         while not self.done:
         
             print("\n-----{}Steps-----".format(self.COUNT+1))
 
-            # Add 1024
+            # if self.COUNT > 30: # 40:
+            #     print("\n############################# test ####################################\n")
+            #     if self.NODELIST[self.state.row][self.state.column] in pre:
+            #         print("\n############################# test ####################################\n")
+            #         print("\n============================\n🤖 🔛　アルゴリズム切り替え\n============================")
+            #         break
+            # if self.TRIGAR_REVERSE:
+            #     if self.BACK_REVERSE:
+            #         try:
 
-            if self.COUNT > 30: # 40:
-                print("\n############################# test ####################################\n")
-                if self.NODELIST[self.state.row][self.state.column] in pre:
-                    print("\n############################# test ####################################\n")
-                    print("\n============================\n🤖 🔛　アルゴリズム切り替え\n============================")
-                    break
-            if self.TRIGAR_REVERSE:
-                if self.BACK_REVERSE:
-                    try:
+            #             print(f"🥌 WEIGHT = {self.w}")
+            #             print("👟 Arc[移動コスト]:{}".format(self.Arc))
+
+            #             print("📂 Storage {}".format(self.BPLIST))
                         
-                        print(f"🥌 WEIGHT = {self.w}")
-                        print("👟 Arc[移動コスト]:{}".format(self.Arc))
-
-                        print("📂 Storage {}".format(self.BPLIST))
-                        
-                        # callback
-                        self.next_position, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
-                        # self.next_position, w, Arc, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
+            #             # callback
+            #             self.next_position, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
+            #             # self.next_position, w, Arc, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
 
 
-                        print(f"========Decision Next State=======\n⚠️  NEXT POSITION:{self.next_position}\n==================================")
-                        self.on_the_way = True
+            #             print(f"========Decision Next State=======\n⚠️  NEXT POSITION:{self.next_position}\n==================================")
+            #             self.on_the_way = True
                         
 
-                        self.BACK_REVERSE = False
+            #             self.BACK_REVERSE = False
 
 
-                        "--test--"
-                        CS = 0
-                        CA = 0
-                        CB = 0
-                        CC = 0
-                        CD = 0
-                        CO = 0
-                        WCS = 0
-                        WCA = 0
-                        WCB = 0
-                        WCC = 0
-                        WCD = 0
-                        WCO = 0
-                        # self.Cost_S.append(0)
-                        for i in range(len(self.Arc)):
-                            if i == 0:
-                                CO = self.Arc[i] 
-                                # WCO = WEIGHT_CROSS[i]
-                            elif i == 1:
-                                CA = self.Arc[i]
-                                # WCA = WEIGHT_CROSS[i]
-                            elif i == 2:
-                                CB = self.Arc[i] 
-                                # WCB = WEIGHT_CROSS[i]
-                            elif i == 3:
-                                CC = self.Arc[i] 
-                                # WCC = WEIGHT_CROSS[i]
-                            elif i == 4:
-                                CD = self.Arc[i]
-                                # WCD = WEIGHT_CROSS[i]
+            #             "--test--"
+            #             CS = 0
+            #             CA = 0
+            #             CB = 0
+            #             CC = 0
+            #             CD = 0
+            #             CO = 0
+            #             WCS = 0
+            #             WCA = 0
+            #             WCB = 0
+            #             WCC = 0
+            #             WCD = 0
+            #             WCO = 0
+            #             # self.Cost_S.append(0)
+            #             for i in range(len(self.Arc)):
+            #                 if i == 0:
+            #                     CO = self.Arc[i] 
+            #                     # WCO = WEIGHT_CROSS[i]
+            #                 elif i == 1:
+            #                     CA = self.Arc[i]
+            #                     # WCA = WEIGHT_CROSS[i]
+            #                 elif i == 2:
+            #                     CB = self.Arc[i] 
+            #                     # WCB = WEIGHT_CROSS[i]
+            #                 elif i == 3:
+            #                     CC = self.Arc[i] 
+            #                     # WCC = WEIGHT_CROSS[i]
+            #                 elif i == 4:
+            #                     CD = self.Arc[i]
+            #                     # WCD = WEIGHT_CROSS[i]
 
-                        for i in range(len(WEIGHT_CROSS)):
-                            if i == 0:
-                                # CO = self.Arc[i] 
-                                WCO = WEIGHT_CROSS[i]
-                            elif i == 1:
-                                # CA = self.Arc[i]
-                                WCA = WEIGHT_CROSS[i]
-                            elif i == 2:
-                                # CB = self.Arc[i] 
-                                WCB = WEIGHT_CROSS[i]
-                            elif i == 3:
-                                # CC = self.Arc[i] 
-                                WCC = WEIGHT_CROSS[i] 
-                            elif i == 4:
-                                # CD = self.Arc[i]
-                                WCD = WEIGHT_CROSS[i]
+            #             for i in range(len(WEIGHT_CROSS)):
+            #                 if i == 0:
+            #                     # CO = self.Arc[i] 
+            #                     WCO = WEIGHT_CROSS[i]
+            #                 elif i == 1:
+            #                     # CA = self.Arc[i]
+            #                     WCA = WEIGHT_CROSS[i]
+            #                 elif i == 2:
+            #                     # CB = self.Arc[i] 
+            #                     WCB = WEIGHT_CROSS[i]
+            #                 elif i == 3:
+            #                     # CC = self.Arc[i] 
+            #                     WCC = WEIGHT_CROSS[i] 
+            #                 elif i == 4:
+            #                     # CD = self.Arc[i]
+            #                     WCD = WEIGHT_CROSS[i]
 
-                        self.Cost_S.append(CS)
-                        self.Cost_A.append(CA)
-                        self.Cost_B.append(CB)
-                        self.Cost_C.append(CC)
-                        self.Cost_D.append(CD)
-                        self.Cost_O.append(CO)
+            #             self.Cost_S.append(CS)
+            #             self.Cost_A.append(CA)
+            #             self.Cost_B.append(CB)
+            #             self.Cost_C.append(CC)
+            #             self.Cost_D.append(CD)
+            #             self.Cost_O.append(CO)
 
-                        self.WEIGHT_CROSS_S.append(WCS)
-                        self.WEIGHT_CROSS_O.append(WCO)
-                        self.WEIGHT_CROSS_A.append(WCA)
-                        self.WEIGHT_CROSS_B.append(WCB)
-                        self.WEIGHT_CROSS_C.append(WCC)
-                        self.WEIGHT_CROSS_D.append(WCD)
+            #             self.WEIGHT_CROSS_S.append(WCS)
+            #             self.WEIGHT_CROSS_O.append(WCO)
+            #             self.WEIGHT_CROSS_A.append(WCA)
+            #             self.WEIGHT_CROSS_B.append(WCB)
+            #             self.WEIGHT_CROSS_C.append(WCC)
+            #             self.WEIGHT_CROSS_D.append(WCD)
 
-                        # self.Cost_S.append(Arc)
-                        # self.Cost_O.append(WEIGHT_CROSS)
-                    except:
-                    # except Exception as e:
-                    #     print('=== エラー内容 ===')
-                    #     print('type:' + str(type(e)))
-                    #     print('args:' + str(e.args))
-                    #     print('message:' + e.message)
-                    #     print('e自身:' + str(e))
-                        print("ERROR!")
-                        # self.STATE_HISTORY.append(self.state)
+            #             # self.Cost_S.append(Arc)
+            #             # self.Cost_O.append(WEIGHT_CROSS)
+            #         except:
+            #         # except Exception as e:
+            #         #     print('=== エラー内容 ===')
+            #         #     print('type:' + str(type(e)))
+            #         #     print('args:' + str(e.args))
+            #         #     print('message:' + e.message)
+            #         #     print('e自身:' + str(e))
+            #             print("ERROR!")
+            #             # self.STATE_HISTORY.append(self.state)
 
-                        self.BackPosition_finish = True
-                        break
+            #             self.BackPosition_finish = True
+            #             break
                 
                 
-                if int(self.state.row) < int(self.next_position.row):
-                        self.TRIGAR_REVERSE = False
-                elif int(self.state.column) > int(self.next_position.column):
-                        self.TRIGAR_REVERSE = False
+            #     if int(self.state.row) < int(self.next_position.row):
+            #             self.TRIGAR_REVERSE = False
+            #     elif int(self.state.column) > int(self.next_position.column):
+            #             self.TRIGAR_REVERSE = False
 
                 
                     
-                try:
+            #     try:
                 
-                    if self.state == self.next_position:
+            #         if self.state == self.next_position:
 
-                        # callback
-                        self.BPLIST, self.w, self.Arc, self.OBS = self.agent.back_end(self.BPLIST, self.next_position, self.w, self.OBS)
-                        self.BACK_REVERSE =True
-                        print("🔚 ARRIVE AT BACK POSITION (戻り終わりました。)")
-                        print(f"🤖 State:{self.state}")
+            #             # callback
+            #             self.BPLIST, self.w, self.Arc, self.OBS = self.agent.back_end(self.BPLIST, self.next_position, self.w, self.OBS)
+            #             self.BACK_REVERSE =True
+            #             print("🔚 ARRIVE AT BACK POSITION (戻り終わりました。)")
+            #             print(f"🤖 State:{self.state}")
 
                         
-                        # self.total_stress = 0
-                        "-- test1104 --"
-                        delta_s = self.Observation[self.state.row][self.state.column]
-                        self.total_stress -= (1-delta_s)
-                        "-- test1104 --"
+            #             # self.total_stress = 0
+            #             "-- test1104 --"
+            #             delta_s = self.Observation[self.state.row][self.state.column]
+            #             self.total_stress -= (1-delta_s)
+            #             "-- test1104 --"
 
-                        # Add 1025
-                        # self.TOTAL_STRESS_LIST.append(self.total_stress)
-                        # self.TOTAL_STRESS_LIST.append(10)
+            #             # Add 1025
+            #             # self.TOTAL_STRESS_LIST.append(self.total_stress)
+            #             # self.TOTAL_STRESS_LIST.append(10)
 
-                        self.STATE_HISTORY.append(self.state)
-                        self.TOTAL_STRESS_LIST.append(self.total_stress)
-                        # self.TOTAL_STRESS_LIST.append(abs(1.0-self.total_stress))
+            #             self.STATE_HISTORY.append(self.state)
+            #             self.TOTAL_STRESS_LIST.append(self.total_stress)
+            #             # self.TOTAL_STRESS_LIST.append(abs(1.0-self.total_stress))
 
-                        self.Node_s.append(0)
-                        self.Node_A.append(0)
-                        self.Node_B.append(0)
-                        self.Node_C.append(0)
-                        self.Node_D.append(0)
-                        self.Node_g.append(0)
+            #             self.Node_s.append(0)
+            #             self.Node_A.append(0)
+            #             self.Node_B.append(0)
+            #             self.Node_C.append(0)
+            #             self.Node_D.append(0)
+            #             self.Node_g.append(0)
 
-                        "--test--"
-                        self.Cost_S.append(CS)
-                        self.Cost_A.append(CA)
-                        self.Cost_B.append(CB)
-                        self.Cost_C.append(CC)
-                        self.Cost_D.append(CD)
-                        self.Cost_O.append(CO)
+            #             "--test--"
+            #             self.Cost_S.append(CS)
+            #             self.Cost_A.append(CA)
+            #             self.Cost_B.append(CB)
+            #             self.Cost_C.append(CC)
+            #             self.Cost_D.append(CD)
+            #             self.Cost_O.append(CO)
 
-                        self.WEIGHT_CROSS_S.append(WCS)
-                        self.WEIGHT_CROSS_O.append(WCO)
-                        self.WEIGHT_CROSS_A.append(WCA)
-                        self.WEIGHT_CROSS_B.append(WCB)
-                        self.WEIGHT_CROSS_C.append(WCC)
-                        self.WEIGHT_CROSS_D.append(WCD)
+            #             self.WEIGHT_CROSS_S.append(WCS)
+            #             self.WEIGHT_CROSS_O.append(WCO)
+            #             self.WEIGHT_CROSS_A.append(WCA)
+            #             self.WEIGHT_CROSS_B.append(WCB)
+            #             self.WEIGHT_CROSS_C.append(WCC)
+            #             self.WEIGHT_CROSS_D.append(WCD)
                         
                         
-                        # 0921 統合テスト
-                        print("\n============================\n🤖 🔛　アルゴリズム切り替え\n============================")
-                        break
+            #             # 0921 統合テスト
+            #             print("\n============================\n🤖 🔛　アルゴリズム切り替え\n============================")
+            #             break
                         
-                except:
-                # except Exception as e:
-                #     print('=== エラー内容 ===')
-                #     print('type:' + str(type(e)))
-                #     print('args:' + str(e.args))
-                #     print('message:' + e.message)
-                #     print('e自身:' + str(e))
-                    print("state:{}".format(self.state))
-                    print("これ以上戻れません。 終了します。")
+            #     except:
+            #     # except Exception as e:
+            #     #     print('=== エラー内容 ===')
+            #     #     print('type:' + str(type(e)))
+            #     #     print('args:' + str(e.args))
+            #     #     print('message:' + e.message)
+            #     #     print('e自身:' + str(e))
+            #         print("state:{}".format(self.state))
+            #         print("これ以上戻れません。 終了します。")
                     
-                    # if self.NODELIST[self.prev_state.row][self.prev_state.column] == 0: # > 0.0:
-                    #     if self.total_stress + self.stress >= 0:
-                    #         self.total_stress += self.stress
-                    break
+            #         # if self.NODELIST[self.prev_state.row][self.prev_state.column] == 0: # > 0.0:
+            #         #     if self.total_stress + self.stress >= 0:
+            #         #         self.total_stress += self.stress
+            #         break
             # Add 1024
-
-            
-
-            
             if self.BACK or self.bf:
                     try:
                         
@@ -322,15 +291,56 @@ class Algorithm_bp():
                             print(f"🥌 WEIGHT = {self.w}")
                             # 手動で設定
                             print("手動で設定!!!!!")
+                            # print("PROB : {}".format(PROB))
+                            # self.Arc = [(abs(self.BPLIST[-1].row-self.BPLIST[x].row)) for x in range(len(self.BPLIST))]
+
+
+
+                            # for arc in reversed(self.SAVE_ARC):
+                            # self.SAVE_ARC.append(0)
+                            # for arc in (self.SAVE_ARC):
+                            #     # if self.SAVE_ARC not in self.Arc_Storage:
+                            #         self.Arc_Storage.append(arc)
+
+                            # print("Arc Strage : {}".format(self.Arc_Storage))
+                            # self.SAVE_ARC.pop(-1)
+                            # test_arc = self.SAVE_ARC
+                            # test_arc.pop(0)
+
                             
+
+
                             print("SAVE ARC : {}".format(self.SAVE_ARC))
+                            # self.SAVE_ARC.append(self.total_stress)
+                            # print("SAVE ARC : {}".format(self.SAVE_ARC))
+                            # # self.SAVE_ARC.pop(0)
+                            # print("SAVE ARC : {}".format(self.SAVE_ARC))
+                            # self.SAVE = []
+                            # self.test = self.SAVE_ARC
+                            # # self.test.append(0)
+                            # for i in reversed(self.SAVE_ARC):
+                            #     self.SAVE.append(sum(self.test))
+                            #     self.test.pop(0)
+                            # print("SAVE ARC : {}".format(self.SAVE))
+
+                            # self.SAVE = [self.ARCLIST[BPLIST[-1]] - self.ARCLIST[BPLIST[x]] for x in range(len(self.BPLIST))]
+                            # self.SAVE = [self.SAVE_ARC[-1] + self.SAVE_ARC[x] for x in range(len(self.SAVE_ARC))]
                             
 
                             if self.Add_Advance:
                                 # add 0923 直線距離
                                 self.Arc = [math.sqrt((self.BPLIST[-1].row - self.BPLIST[x].row) ** 2 + (self.BPLIST[-1].column - self.BPLIST[x].column) ** 2) for x in range(len(self.BPLIST))]
 
-                                
+                                # self.Arc = self.SAVE_ARC
+                                # 以下をBPLISTと紐づけられればできるかもしれない
+                                # self.SAVE_ARC = [
+                                #     [0, 0, 0, 0], # ?->sまでの距離
+                                #     [4, 0, 0, 0], # sまでの距離
+                                #     [8, 4, 0, 0], # s, Aまでの距離
+                                #     [12, 8, 4, 0], # s, A, Bまでの距離
+                                #     [15, 11, 7, 3], # s, A, B, Cまでの距離
+                                #     # [19, 15, 11, 7], # s, A, B, C, Dまでの距離
+                                # ]
                                 # self.Arc = []
                                 # for x in range(len(self.BPLIST)):
                                 #     self.Arc.append(x)
@@ -387,13 +397,8 @@ class Algorithm_bp():
                         
                         # callback
                         self.next_position, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
-
-                        # self.next_position, w, Arc, WEIGHT_CROSS = self.agent.back_position(self.BPLIST, self.w, self.Arc)
-
-
                         print(f"========Decision Next State=======\n⚠️  NEXT POSITION:{self.next_position}\n==================================")
                         self.on_the_way = True
-
 
                         "--test--"
                         # try:
@@ -482,10 +487,10 @@ class Algorithm_bp():
                         
                         break
 
-            if int(self.state.row) > int(self.next_position.row):
-                self.TRIGAR_REVERSE = True
-            elif int(self.state.column) < int(self.next_position.column):
-                self.TRIGAR_REVERSE = True
+            # if int(self.state.row) > int(self.next_position.row):
+            #     self.TRIGAR_REVERSE = True
+            # elif int(self.state.column) < int(self.next_position.column):
+            #     self.TRIGAR_REVERSE = True
                 
             try:
 
@@ -500,7 +505,21 @@ class Algorithm_bp():
                         print(f"🤖 State:{self.state}")
                         print("OBS : {}".format(self.OBS))
 
-                        
+                        # self.STATE_HISTORY.append(self.state)
+                        # self.STATE_HISTORY.append(self.state)
+                        # self.STATE_HISTORY.append(self.state)
+
+
+
+                        # self.STATE_HISTORY.append(self.state)
+                        # self.STATE_HISTORY.append(self.state)
+                        # self.STATE_HISTORY.append(self.state)
+                        # self.STATE_HISTORY.append(self.state)
+                        # self.STATE_HISTORY.append(self.state)
+                        # self.STATE_HISTORY.append(self.state)
+                        # self.STATE_HISTORY.append(self.state)
+                        # self.STATE_HISTORY.append(self.state)
+                        # self.STATE_HISTORY.append(self.state)
 
                         # self.total_stress = 0
                         "-- test1104 --"
@@ -526,6 +545,10 @@ class Algorithm_bp():
                         self.Node_D.append(0)
                         self.Node_g.append(0)
 
+                        
+                        # # Add 1027 Robosin
+                        # self.TRIGAR = False
+                        # self.TRIGAR_REVERSE = False
                         # "--test--"
                         # self.Cost_S.append(0)
                         # self.Cost_A.append(0)
@@ -548,6 +571,10 @@ class Algorithm_bp():
                         self.WEIGHT_CROSS_B.append(WCB)
                         self.WEIGHT_CROSS_C.append(WCC)
                         self.WEIGHT_CROSS_D.append(WCD)
+
+                        # self.total_stress = 0
+                        # self.TRIGAR = False
+                        # self.TRIGAR_REVERSE = False
                         
 
 
@@ -586,7 +613,7 @@ class Algorithm_bp():
                 
             print(f"🤖 State:{self.state}")
             if not self.state_history_first:
-                self.STATE_HISTORY.append(self.state) # これがないと戻る行動が可視化されない
+                self.STATE_HISTORY.append(self.state)
                 self.TOTAL_STRESS_LIST.append(self.total_stress)
                 # self.TOTAL_STRESS_LIST.append(abs(1.0-self.total_stress))
 
@@ -617,26 +644,24 @@ class Algorithm_bp():
             self.state_history_first = False
 
 
-            # self.state = self.next_position # 戻る行動を省略したver.
-            
-            self.action, self.Reverse   , self.lost = self.agent.policy_bp(self.state, self.TRIGAR, self.TRIGAR_REVERSE, self.COUNT)
+            self.state = self.next_position # 戻る行動を省略したver.
 
-            # self.next_state, self.stress, self.done = self.env.step(self.action, self.TRIGAR)
-
-            # self.next_state, self.stress, self.done = self.env._move(self.state, self.action, self.TRIGAR, All_explore, self.Reverse)
-            self.next_state, self.stress, self.done = self.env.step(self.state, self.action, self.TRIGAR)
-            # self.prev_state = self.state # 1つ前のステップを保存 -> 後でストレスの減少に使う
-            self.state = self.next_state
+            # self.action, self.Reverse   , self.lost = self.agent.policy_bp(self.state, self.TRIGAR, self.TRIGAR_REVERSE, self.COUNT)
+            # # self.next_state, self.stress, self.done = self.env.step(self.action, self.TRIGAR)
+            # # self.next_state, self.stress, self.done = self.env._move(self.state, self.action, self.TRIGAR, All_explore, self.Reverse)
+            # self.next_state, self.stress, self.done = self.env.step(self.state, self.action, self.TRIGAR)
+            # # self.prev_state = self.state # 1つ前のステップを保存 -> 後でストレスの減少に使う
+            # self.state = self.next_state
             
             
             print("COUNT : {}".format(self.COUNT))
-            if self.COUNT > 100: # 50: # 150:
+            # if self.COUNT > 100: # 50: # 150:
 
-                print("\n######## BREAK ########\n")
-                # breakではなくて、戻る場所に戻れないから別の戻る場所にするとか
-                print("\n📂 Storage {}\n\n\n".format(self.BPLIST))
-                break
-            self.COUNT += 1
+            #     print("\n######## BREAK ########\n")
+            #     # breakではなくて、戻る場所に戻れないから別の戻る場所にするとか
+            #     print("\n📂 Storage {}\n\n\n".format(self.BPLIST))
+            #     break
+            # self.COUNT += 1
 
         # print("state_history : {}".format(self.STATE_HISTORY))
         self.COUNT = 0

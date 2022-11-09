@@ -5,7 +5,7 @@ from random import random
 
 import random
 import numpy as np
-from reference_match_rate import Property
+from reference_match_rate_Robosin import Property
 
 
 class State():
@@ -72,11 +72,8 @@ class Environment():
         # self.agent_state = State(6, 2)
         # self.agent_state = State(5, 2)
         # self.agent_state = State(12, 2)
+        # self.agent_state = State(22, 8)
         self.agent_state = State(22, 8)
-        self.agent_state = State(12, 8) # Lost_Explore_Action
-
-
-        # self.agent_state = State(27, 8) # 1024 meeting 一本道×戻る場所決定のスタート地点
         # self.agent_state = State(1, 2)
         # self.agent_state = State(6, 0)
         return self.agent_state
@@ -91,7 +88,15 @@ class Environment():
         else:
             return False
 
-    def _move(self, state, action, TRIGAR):
+    def _move(self, state, action, TRIGAR): # , All, Reverse):
+
+        # 試しにコメントアウト
+        # if Reverse:
+        #     self.mark_reverse(state)
+        # else:
+        #     self.mark(state, TRIGAR) # , All)
+
+        # next_state  = self.transit(state, action)
 
 
         if not self.can_action_at(state):
@@ -122,8 +127,18 @@ class Environment():
         if self.grid[next_state.row][next_state.column] == 9:
             next_state = state
 
+        # stress, done = self.stress_func(next_state, TRIGAR) # 上だと沼る
         
-        return next_state
+        
+        
+        # pprint.pprint(self.map)
+
+
+        
+
+        
+
+        return next_state # , stress, done # , self.s
 
     def stress_func(self, state, TRIGAR):
 
@@ -172,15 +187,15 @@ class Environment():
             if a == action:
                 # prob = 1 
                 prob = self.move_prob
-            elif a != opposite_direction: # 進もうとしている方向と　逆以外　なら確率を半分ずつ与える
-                # prob = 0 
-                prob = (1 - self.move_prob) / 2
-
-
-            # # elif a == opposite_direction: # 進もうとしている方向と　逆　なら確率を半分ずつ与える
+            # elif a != opposite_direction: # 進もうとしている方向と　逆以外　なら確率を半分ずつ与える
             #     # prob = 0 
-            # else:
-            #     prob = (1 - self.move_prob) / 3
+            #     prob = (1 - self.move_prob) / 2
+
+
+            # elif a == opposite_direction: # 進もうとしている方向と　逆　なら確率を半分ずつ与える
+                # prob = 0 
+            else:
+                prob = (1 - self.move_prob) / 3
 
             next_state = self._move(state, a, TRIGAR)
 
@@ -255,25 +270,13 @@ class Environment():
         self.map[state.row][state.column] = self.marking_param # 1
 
         # if not Reverse:
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        # Add 1024 ① 戻る行動の可視化
-        if TRIGAR: # Add 1024
-            self.map[state.row][state.column] = 2 # こっちが先でないとノードの場所に戻ってもmapに1を上書きできない
-        # Add 1024 ① 戻る行動の可視化
+        # if TRIGAR:
+        #     self.map[state.row][state.column] = 2 # こっちが先でないとノードの場所に戻ってもmapに1を上書きできない
 
-
-
-
-
-        
+        # # Add 1024 ① 戻る行動の可視化
+        # if TRIGAR: # Add 1024
+        #     self.map[state.row][state.column] = 2 # こっちが先でないとノードの場所に戻ってもmapに1を上書きできない
+        # # Add 1024 ① 戻る行動の可視化
        
         # if Reverse:
         #     self.map[state.row][state.column] = 1
@@ -461,17 +464,6 @@ class Environment():
         #     test = False
 
         return test, action # , next_state
-
-
-
-
-
-
-
-
-
-
-
 
 
 

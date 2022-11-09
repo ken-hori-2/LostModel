@@ -1,7 +1,10 @@
+from cgi import test
+from tkinter.messagebox import NO
 import numpy as np
 from sklearn import preprocessing
 import random
-from reference_match_rate import Property
+
+from reference_match_rate_Robosin import Property
 import math
 
 
@@ -118,14 +121,7 @@ class Agent():
         except:
             print("このノードから探索できる許容範囲は探索済み\n戻る場所決定のアルゴリズムへ")
             print("TRIGAR : {}".format(self.trigar))
-            
-            # Add 1024 ① これは追加しなくても大丈夫だった
             # self.All = True
-            # Add 1024 ①
-
-
-
-
             return self.actions[1], bp, self.All, self.trigar, self.Reverse, self.lost
 
         
@@ -155,49 +151,24 @@ class Agent():
             
         print("========\n探索開始\n========")
         # if not self.trigar:
-
-        exp_action = []
+        exp_action = [] # Add 1108
         for dir in next_diretion:
 
             print("dir:{}".format(dir))
             y_n, action = self.env.expected_move(state, dir, self.trigar, self.All, self.marking_param)
-
-
-
-
-            # さらにここでより新しい情報が得られそうな方向を優先的に探す
-            # 回数を保存、ゴール方向
-            # 1.未探索
-            # 2.戻る以外の3方向からランダム(現状) (1. == 2.)
-
-            # 以下、より新しい情報が得られそうな方向の決定
-            # 3.ゴール方向
-            # 4.回数の多い方向
-            # print(self.actions)
-            # print(self.actions[0])
-            # exp_action = []
+            
             if y_n:
                 y_n = False
                 exp_action.append(action)
                 print("================================================== exp action : {}".format(exp_action))
-
-
-
-
-
-
-
-
-
-            
             # if y_n:
             #     return y_n, action, bp
             # print("y/n:{}".format(y_n))
         if exp_action:
             for x in exp_action:
                 print("1015 exp action : {}".format(x))
-                if x == self.actions[2]:
-                    print("========= Action.LEFT 1015 test =========")
+                # if x == self.actions[2]:
+                #     print("========= Action.LEFT 1015 test =========")
             y_n = True
             return y_n, exp_action[0], bp
         print("y/n:{}".format(y_n))
@@ -304,16 +275,7 @@ class Agent():
         #     self.TRIGAR_REVERSE_bp = False
         pre, Node, Arc, Arc_sum, PERMISSION = self.refer.reference()
 
-        
-        
-        
-        
-        
-        
-        
-        
-        # Add 1024 ② これは追加しなくても大丈夫だった
-        # if self.COUNT > 30:
+        # if self.COUNT > 100: # 40:
         #     # if self.NODELIST[self.state.row][self.state.column] in pre:
         #     #     pass
         #     print("沼にハマった時にとりあえず1のマーキング通りに戻る機能")
@@ -334,8 +296,6 @@ class Agent():
         #         if y_n:
         #             self.lost = False
         #             return action, self.Reverse
-
-        # Add 1024 ②
 
 
         
@@ -428,8 +388,7 @@ class Agent():
             
         "----------------------------------------------------------------------"
         # 正規化にすると0, 1が出てしまうので、stress×cost で0になりやすく、そこに戻ることが多くなってしまう 1026
-
-        
+            
         # w = np.round(preprocessing.minmax_scale(w), 3)
         # Arc = np.round(preprocessing.minmax_scale(Arc), 3)
         # Arc_INVERSE = np.round(preprocessing.minmax_scale(Arc_INVERSE), 3)
@@ -452,8 +411,7 @@ class Agent():
         if all(elem  == 0 for elem in WEIGHT_CROSS):
             print("WEIGHT CROSSは全部0です。")
             
-            # Arc = Arc.tolist() # 1026
-
+            # Arc = Arc.tolist()
             print("Arc type : {}".format(type(Arc)))
             near_index = Arc.index(min(Arc))
             print("Arc:{}, index:{}".format(Arc, near_index))
@@ -464,26 +422,15 @@ class Agent():
         #     w = w.tolist()
         # except:
         #     pass
-        # # next_position = BPLIST[w.index(max(w))] # stressのみで戻る場所決定
+        # # next_position = BPLIST[w.index(max(w))]
+        # next_position = BPLIST[WEIGHT_CROSS.index(max(WEIGHT_CROSS))]
         # next_position = BPLIST[w.index(min(w))]
         # 1024
         "----------------------------------------------------------------------"
-        # next_position = BPLIST[WEIGHT_CROSS.index(max(WEIGHT_CROSS))] # stress + cost
-        # Add 1026
         next_position = BPLIST[WEIGHT_CROSS.index(min(WEIGHT_CROSS))] # stress + cost
         "----------------------------------------------------------------------"
 
-
-
-
-
-
-
-
-
-        
-
-        return next_position, WEIGHT_CROSS # , w, Arc_INVERSE, WEIGHT_CROSS
+        return next_position
 
     def back_end(self, BPLIST, next_position, w, OBS):
         
