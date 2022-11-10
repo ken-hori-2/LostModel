@@ -3,8 +3,11 @@ from tkinter.messagebox import NO
 import numpy as np
 from sklearn import preprocessing
 import random
-from reference_match_rate_Robosin import Property
+
+from reference_match_rate import Property
 import math
+
+
 from Lost_Action_actions import Agent_actions
 
 
@@ -21,7 +24,9 @@ class Agent():
         self.map = arg[1]
         self.NODELIST = arg[2]
         # self.goal = arg[3]
+
         self.refer = Property() # arg[5]
+
         # self.actions = self.env.actions
         # self.goal = GOAL_STATE
         # self.NODELIST = NODELIST
@@ -30,10 +35,14 @@ class Agent():
         # print("GOAL STATE : {}".format(self.goal))
         self.marking_param = marking_param
 
-        "======================================================="
-        "----- Add 1110 -----"
+
+
+
+
+        # add1015
         self.decision_action = Agent_actions(self.env)
-        "======================================================="
+
+        
 
     def policy_advance(self, state, TRIGAR, action):
         
@@ -41,18 +50,22 @@ class Agent():
         self.prev_action = action
         print("Prev Action : {}".format(action))
 
+        # try:
         action = self.model_advance(state)
         self.Advance_action = action
-
+    
         print("Action : {}".format(action))
         print("Advance action : {}".format(self.Advance_action))
+        
         print("🍎 🍏 🍋 🍊 🍐")
-
+        # return action, self.All, self.Reverse
+        # except:
         if action == None:
             print("ERROR 🤖")
             ############コメントアウト##############
             # self.TRIGAR_advance = True
             ############コメントアウト##############
+
             # return self.actions[1], self.Reverse, self.TRIGAR_advance # このaction[1]がエラーの原因
             return self.prev_action, self.Reverse, self.TRIGAR_advance # このprev action も仮
             
@@ -61,6 +74,8 @@ class Agent():
     def policy_bp(self, state, TRIGAR, TRIGAR_REVERSE, COUNT):
         self.TRIGAR_bp = TRIGAR
         self.TRIGAR_REVERSE_bp = TRIGAR_REVERSE
+
+        # All = False
         self.All = False
         self.Reverse = False
         # self.lost = False
@@ -79,16 +94,24 @@ class Agent():
         #     print('e自身:' + str(e))
             print("agent / policy_bp ERROR")
 
-            "動いていない時に迷ったとする場合"
             # if NOT_MOVE:
             #     self.All = True
-            
+
+
+
+
             # これのおかげで沼でも少し動けている
             # return self.actions[1], self.Reverse    , self.lost
             return random.choice(self.actions), self.Reverse    , self.lost
+
         print("🍎 🍏 🍋 🍊 🍐")
         # return action, self.All, self.Reverse
         return action, self.Reverse , self.lost
+
+
+    
+
+
 
     def policy_exp(self, state, TRIGAR):
         self.trigar = TRIGAR
@@ -97,10 +120,12 @@ class Agent():
         self.All = False
         bp = False
         self.lost = False
+
         self.Reverse = False
         
         try:
             y_n, action, bp = self.model_exp(state)
+            
             print("y/n:{}".format(y_n))
             print("Action : {}".format(action))
         except:
@@ -108,47 +133,77 @@ class Agent():
             print("TRIGAR : {}".format(self.trigar))
             # self.All = True
             return self.actions[1], bp, self.All, self.trigar, self.Reverse, self.lost
+
+        
         return action, bp, self.All, self.trigar, self.Reverse, self.lost
+
+
 
     def model_exp(self, state):
 
-        next_diretion = [(self.actions[0]), (self.actions[1]), (self.actions[2]), (self.actions[3])]
+        # next_diretion = [(self.actions[0]), (self.actions[1]), (self.actions[2]), (self.actions[3])]
+        next_diretion = [(self.actions[1]), (self.actions[2]), (self.actions[0]), (self.actions[3])]
 
         y_n = False
         bp = False
+        
         pre, Node, Arc, Arc_sum, PERMISSION = self.refer.reference()
 
-        # 今はここに入ってbp_algorithmに遷移している
+        # if self.NODELIST[state.row][state.column] == 1: # 2: # 今はここに入ってbp_algorithmに遷移している
         if self.NODELIST[state.row][state.column] in pre:
                 print("========\n探索終了\n========")
                 self.trigar = False
                 bp = True
+
         elif self.NODELIST[state.row][state.column] == "x":
             print("========\n交差点\n========")
             self.trigar = False
 
+            
         print("========\n探索開始\n========")
         # if not self.trigar:
-        exp_action = [] # Add 1108
+
+        exp_action = []
         for dir in next_diretion:
 
             print("dir:{}".format(dir))
             y_n, action = self.env.expected_move(state, dir, self.trigar, self.All, self.marking_param)
-            
+
+
+
+
+            # さらにここでより新しい情報が得られそうな方向を優先的に探す
+            # 回数を保存、ゴール方向
+            # 1.未探索
+            # 2.戻る以外の3方向からランダム(現状) (1. == 2.)
+
+            # 以下、より新しい情報が得られそうな方向の決定
+            # 3.ゴール方向
+            # 4.回数の多い方向
+            # print(self.actions)
+            # print(self.actions[0])
+            # exp_action = []
             if y_n:
                 y_n = False
                 exp_action.append(action)
                 print("================================================== exp action : {}".format(exp_action))
+
+
+
+
+
+
+
+
+
+            
             # if y_n:
             #     return y_n, action, bp
             # print("y/n:{}".format(y_n))
         if exp_action:
 
-            "======================================================="
-            "----- Add 1110 -----"
-            if self.NODELIST[state.row][state.column] in pre: # "x":
-                print("========\n交差点\n========")
-                ##############
+            if self.NODELIST[state.row][state.column] == "O": # "x":
+                print("========\n交差点\n========")##############
                 Average_Value = self.decision_action.value(exp_action)
                 ##############
                 print("\n===================\n🤖⚡️ Average_Value:{}".format(Average_Value))
@@ -179,19 +234,18 @@ class Agent():
                 # print(" == つまり、新しい情報が得られる確率:{} -----> これが一番重要・・・未探索かつこの数値が大きい方向の行動を選択\n===================\n".format(Average_Value))
             else:
                 action_value = exp_action[0]
-            "----- Add 1110 -----"
-            "======================================================="
-
             for x in exp_action:
                 print("1015 exp action : {}".format(x))
+                if x == self.actions[2]:
+                    print("========= Action.LEFT 1015 test =========")
             y_n = True
             # return y_n, exp_action[0], bp
-            "======================================================="
-            "----- Add 1110 -----"
             return y_n, action_value, bp
-            "======================================================="
         print("y/n:{}".format(y_n))
 
+
+
+        
         if not bp:
             print("==========\nこれ以上進めない状態\n or 次のマスは探索済み\n==========") # どの選択肢も y_n = False
             self.lost = True
@@ -218,6 +272,7 @@ class Agent():
         print("= 現在地からゴールに迎える選択肢はない\n")
         # self.lost = True
 
+
     def model_advance(self, state):
 
         next_diretion = [(self.actions[0]), (self.actions[1]), (self.actions[2]), (self.actions[3])]
@@ -233,16 +288,20 @@ class Agent():
         # 試しにコメントアウト0923
         # advanceの行動の優先度をあらかじめ設定
 
+
         if self.NODELIST[state.row][state.column] == "x":
             print("ランダムに決定")
             next_diretion = self.advance_direction_decision(next_diretion)
+
+        
         print("next dir : {}".format(next_diretion))
 
         y_n = False
         # bp = False
         self.All = False
-        self.Reverse = False
 
+
+        self.Reverse = False
         if self.NODELIST[state.row][state.column] == "x":
             print("========\n交差点\n========")
             self.TRIGAR_advance = False
@@ -259,10 +318,14 @@ class Agent():
                 if y_n:
                     self.prev_action = action
                     # print("prev action : {}".format(self.prev_action))
+                    
                     return action
                 print("y/n:{}".format(y_n))
+            
+
         print("==========\n迷った【許容を超える】状態\n==========") # どの選択肢も y_n = False
         print("= これ以上先に現在地からゴールに迎える選択肢はない\n= 一旦体制を整える\n= 戻る")
+
         print("\n というよりはストレスが溜まり切る前にこれ以上進めなくなってエラーが出る")
         self.TRIGAR_advance = True
         # # self.trigar = True
@@ -275,6 +338,7 @@ class Agent():
         # next_diretion = [(self.actions[0]), (self.actions[1]), (self.actions[2]), (self.actions[3])]
         # next_diretion = [(self.actions[1]), (self.actions[0]), (self.actions[2]), (self.actions[3])]
 
+        
         # if self.NODELIST[state.row][state.column] == "x":
         #     print("========\n交差点\n========")
         #     self.TRIGAR_bp = False
@@ -303,9 +367,13 @@ class Agent():
         #             self.lost = False
         #             return action, self.Reverse
 
+
+        
         print("========\nBACK 開始\n========")
         print("TRIGAR : {}".format(self.TRIGAR_bp))
         print("REVERSE : {}".format(self.TRIGAR_REVERSE_bp))
+
+        
         
         if self.TRIGAR_REVERSE_bp:
             self.Reverse = True
@@ -321,12 +389,18 @@ class Agent():
                 print("y/n:{}".format(y_n))
             print("TRIGAR REVERSE ⚡️🏁")
 
+            
+            
+        
         if self.TRIGAR_bp:
             # next_diretion = self.next_direction_trigar_reverse() # [(self.actions[1]), (self.actions[0]), (self.actions[2]), (self.actions[3])]
             next_diretion = self.next_direction_decision("trigar")
             print("TEST!!!!!")
 
+            # add0926
             # self.TRIGAR_REVERSE_bp = False
+
+            
             for dir in next_diretion:
                 print("\ndir:{}".format(dir))
                 y_n, action = self.env.expected_move_return(state, dir, self.TRIGAR_bp, self.All)
@@ -336,6 +410,7 @@ class Agent():
                     return action, self.Reverse
                 print("y/n:{}".format(y_n))
 
+            # add 0924
             # if not bp:
             if self.lost:
                 print("==========\nこれ以上戻れない状態\n or 次のマスは以前戻った場所\n==========") # どの選択肢も y_n = False
@@ -349,36 +424,47 @@ class Agent():
                         return action, self.Reverse # , self.lost
                     print("y/n:{}".format(y_n))
 
+        
+
         print("==========\n戻り終わった状態\n==========") # どの選択肢も y_n = False
         print("= 現在地から次にゴールに迎える選択肢を選ぶ【未探索方向】\n")
         self.lost = True
 
+
+
+
+
+
+
     def back_position(self, BPLIST, w, Arc):
-        
-        "----------------------------------------------------------------------"
-        # ストレスの小さいノードに戻るver.
-        "== stressの小ささで戻るノードを決める場合 =="
-        Move_Cost = [round(Arc[x],2) for x in range(len(Arc))] # Arc_INVERSE ではなく Arc
-        "----------------------------------------------------------------------"  
-        "----------------------------------------------------------------------"
-        # 正規化にすると0, 1が出てしまうので、stress×cost で0になりやすく、そこに戻ることが多くなってしまう 1026
-        "正規化の為の処理"  
+        try:
+            Arc_INVERSE = [round(1/Arc[x],2) for x in range(len(Arc))]
+        except:
+        #     # Arc_INVERSE = [round(Arc[x],2) for x in range(len(Arc))]
+            print("ERROR")
+            Arc_INVERSE = []
+            for x in range(len(Arc)):
+                try:
+                    Arc_INVERSE.append(round(1/Arc[x],2))
+                except:
+                    Arc_INVERSE.append(0)
+            
         # w = np.round(preprocessing.minmax_scale(w), 3)
         # Arc = np.round(preprocessing.minmax_scale(Arc), 3)
-        # Move_Cost = np.round(preprocessing.minmax_scale(Move_Cost), 3)
-        "----------------------------------------------------------------------"
+        # Arc_INVERSE = np.round(preprocessing.minmax_scale(Arc_INVERSE), 3)
         print("📐正規化 w : {}, Arc : {}".format(w, Arc))
-        print("📐 正規化 WEIGHT : {}, Move_Cost : {}".format(w, Move_Cost))
+        print("📐 正規化 WEIGHT : {}, Arc_INVERSE : {}".format(w, Arc_INVERSE))
 
         # Arc = [0, 0]の時,Arc = [1, 1]に変更
-        if all(elem  == 0 for elem in Move_Cost):
-            Move_Cost = [1 for elem in Move_Cost]
-            print("   Arc = [0, 0]の時, Move_Cost : {}".format(Move_Cost))
+        if all(elem  == 0 for elem in Arc_INVERSE):
+            Arc_INVERSE = [1 for elem in Arc_INVERSE]
+            print("   Arc = [0, 0]の時, Arc_INVERSE : {}".format(Arc_INVERSE))
         if all(elem  == 0 for elem in w):
             w = [1 for elem in w]
             print("   WEIGHT = [0, 0]の時, WEIGHT : {}".format(w))
 
-        WEIGHT_CROSS = [round(x*y, 3) for x,y in zip(w,Move_Cost)]
+
+        WEIGHT_CROSS = [round(x*y, 3) for x,y in zip(w,Arc_INVERSE)]
         print("⚡️ WEIGHT CROSS:{}".format(WEIGHT_CROSS))
 
         if all(elem  == 0 for elem in WEIGHT_CROSS):
@@ -391,17 +477,12 @@ class Agent():
             WEIGHT_CROSS[near_index] = 1
             print("⚡️ WEIGHT CROSS:{}".format(WEIGHT_CROSS))
 
-        
-        "ストレスのみで戻る場所決定する場合"
         # try:
         #     w = w.tolist()
         # except:
         #     pass
-        # next_position = BPLIST[w.index(min(w))]
-        "----------------------------------------------------------------------"
-        "ストレス+移動コストで戻る場所を決定する場合"
-        next_position = BPLIST[WEIGHT_CROSS.index(min(WEIGHT_CROSS))] # stress + cost
-        "----------------------------------------------------------------------"
+        # next_position = BPLIST[w.index(max(w))]
+        next_position = BPLIST[WEIGHT_CROSS.index(max(WEIGHT_CROSS))]
 
         return next_position
 
@@ -431,23 +512,45 @@ class Agent():
 
         return BPLIST, w, Arc, OBS
 
+
+
+    
+
+
+
     def next_direction_decision(self, trigar__or__reverse):
         if self.Advance_action == self.actions[0]: # Action.UP:
-            self.BP_action = self.actions[1] # [0]
+        # if self.Advance_action == self.actions[1]: # Action.UP:
+            self.BP_action = self.actions[1] # [0] # [1]
             next_diretion_trigar = [(self.actions[1]), (self.actions[0]), (self.actions[2]), (self.actions[3])]
             next_diretion_trigar_reverse = [(self.actions[0]), (self.actions[1]), (self.actions[2]), (self.actions[3])]
+            # next_diretion_trigar_reverse = [(self.actions[1]), (self.actions[0]), (self.actions[2]), (self.actions[3])]
+            # next_diretion_trigar = [(self.actions[0]), (self.actions[1]), (self.actions[2]), (self.actions[3])]
+
         elif self.Advance_action == self.actions[1]: # Action.DOWN:
-            self.BP_action = self.actions[0] # [1]
+        # elif self.Advance_action == self.actions[0]: # Action.DOWN:
+            self.BP_action = self.actions[0] # [1] # [0]
             next_diretion_trigar = [(self.actions[0]), (self.actions[1]), (self.actions[2]), (self.actions[3])]
             next_diretion_trigar_reverse = [(self.actions[1]), (self.actions[0]), (self.actions[2]), (self.actions[3])]
+            # next_diretion_trigar_reverse = [(self.actions[0]), (self.actions[1]), (self.actions[2]), (self.actions[3])]
+            # next_diretion_trigar = [(self.actions[1]), (self.actions[0]), (self.actions[2]), (self.actions[3])]
+
         elif self.Advance_action == self.actions[2]: # Action.LEFT:
-            self.BP_action = self.actions[3] # [2]
+        # elif self.Advance_action == self.actions[3]: # Action.LEFT:
+            self.BP_action = self.actions[3] # [2] # [3]
             next_diretion_trigar = [(self.actions[3]), (self.actions[2]), (self.actions[0]), (self.actions[1])]
             next_diretion_trigar_reverse = [(self.actions[2]), (self.actions[3]), (self.actions[0]), (self.actions[1])]
+            # next_diretion_trigar_reverse = [(self.actions[3]), (self.actions[2]), (self.actions[0]), (self.actions[1])]
+            # next_diretion_trigar = [(self.actions[2]), (self.actions[3]), (self.actions[0]), (self.actions[1])]
+
         elif self.Advance_action == self.actions[3]: # Action.RIGHT:
-            self.BP_action = self.actions[2] # [3]
+        # elif self.Advance_action == self.actions[2]: # Action.RIGHT:
+            self.BP_action = self.actions[2] # [3] # [2]
             next_diretion_trigar = [(self.actions[2]), (self.actions[3]), (self.actions[0]), (self.actions[1])]
             next_diretion_trigar_reverse = [(self.actions[3]), (self.actions[2]), (self.actions[0]), (self.actions[1])]
+            # next_diretion_trigar_reverse = [(self.actions[2]), (self.actions[3]), (self.actions[0]), (self.actions[1])]
+            # next_diretion_trigar = [(self.actions[3]), (self.actions[2]), (self.actions[0]), (self.actions[1])]
+
         else:
             next_diretion_trigar, next_diretion_trigar_reverse = self.next_direction_decision_prev_action()
 
@@ -463,14 +566,17 @@ class Agent():
             self.BP_action = self.actions[1]
             next_diretion_trigar = [(self.actions[1]), (self.actions[0]), (self.actions[2]), (self.actions[3])]
             next_diretion_trigar_reverse = [(self.actions[0]), (self.actions[1]), (self.actions[2]), (self.actions[3])]
+
         elif self.prev_action == self.actions[1]: # Action.DOWN:
             self.BP_action = self.actions[0]
             next_diretion_trigar = [(self.actions[0]), (self.actions[1]), (self.actions[2]), (self.actions[3])]
             next_diretion_trigar_reverse = [(self.actions[1]), (self.actions[0]), (self.actions[2]), (self.actions[3])]
+
         elif self.prev_action == self.actions[2]: # Action.LEFT:
             self.BP_action = self.actions[3]
             next_diretion_trigar = [(self.actions[3]), (self.actions[2]), (self.actions[0]), (self.actions[1])]
             next_diretion_trigar_reverse = [(self.actions[2]), (self.actions[3]), (self.actions[0]), (self.actions[1])]
+
         elif self.prev_action == self.actions[3]: # Action.RIGHT:
             self.BP_action = self.actions[2]
             next_diretion_trigar = [(self.actions[2]), (self.actions[3]), (self.actions[0]), (self.actions[1])]
@@ -478,11 +584,16 @@ class Agent():
 
         return next_diretion_trigar, next_diretion_trigar_reverse
 
+
     def advance_direction_decision(self, dir):
 
+        
         test = random.sample(dir, len(dir))
         print("test dir : {}, dir : {}".format(test, dir))
+
         # test = [(self.actions[3]), (self.actions[1]), (self.actions[0]), (self.actions[1])]
         # test = [(self.actions[2]), (self.actions[1]), (self.actions[3]), (self.actions[0])]
         return test # random.shuffle(dir)
+
+
         #  [<Action.RIGHT: -2>, <Action.DOWN: -1>, <Action.UP: 1>, <Action.LEFT: 2>]

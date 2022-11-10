@@ -4,7 +4,6 @@ from reference_match_rate_Robosin import Property
 
 class Algorithm_bp():
 
-    
     def __init__(self, *arg):
         
         self.state = arg[0] # state
@@ -12,11 +11,8 @@ class Algorithm_bp():
         self.agent = arg[2] # agent
         self.NODELIST = arg[3] # NODELIST
         self.Observation = arg[4]
-
         self.refer = Property()
-
         # self.Cal = Cal()
-
         ########## parameter ##########
         self.total_stress = 0
         self.stress = 0
@@ -37,7 +33,6 @@ class Algorithm_bp():
         self.OBS = []
         # self.next_position = []
         self.Storage_Arc = []
-        
         self.SAVE = []
             
 
@@ -56,11 +51,8 @@ class Algorithm_bp():
         self.first_pop = True
         self.BackPosition_finish = False
         pre, Node, Arc, Arc_sum, PERMISSION = self.refer.reference()
-
-
         self.TOTAL_STRESS_LIST = TOTAL_STRESS_LIST
 
-        
 
         while not self.done:
         
@@ -68,35 +60,21 @@ class Algorithm_bp():
 
             
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+            "戻る行動の可視化ver.の場合はここにReverseが入る"
+
+
+
             
             if self.BACK or self.bf:
                     try:
                         
                         if self.bf: # ストレスが溜まってから初回
-                            # 🔑今は観測されている前提の簡単なやつ
                             self.w = self.OBS
                             print(f"🥌 WEIGHT = {self.w}")
-                            # 手動で設定
-                            print("手動で設定!!!!!")
-
                             print("SAVE ARC : {}".format(self.SAVE_ARC))
-                            
 
                             if self.Add_Advance:
-                                # add 0923 直線距離
+                                # ユークリッド距離
                                 self.Arc = [math.sqrt((self.BPLIST[-1].row - self.BPLIST[x].row) ** 2 + (self.BPLIST[-1].column - self.BPLIST[x].column) ** 2) for x in range(len(self.BPLIST))]
 
                                 # self.Arc = self.SAVE_ARC
@@ -113,22 +91,17 @@ class Algorithm_bp():
                                 # for x in range(len(self.BPLIST)):
                                 #     self.Arc.append(x)
                                 self.SAVE = []
-                                # if self.first_pop:
+
                                 SUM = 0
                                 first = True
                                 for x in self.SAVE_ARC:
-                                    # SUM += x
                                     if first:
                                         first = False
                                     else:
                                         self.SAVE.insert(0, self.SAVE_ARC[-1] + SUM)
                                     SUM += x
                                 print("############## DEMO ############## : {}".format(self.SAVE))
-                                    # self.first_pop = False
-
-
                                 # self.Arc = self.SAVE
-
 
                                 print("👟 Arc[移動コスト]:{}".format(self.Arc))
                                 index = self.Arc.index(0)
@@ -136,39 +109,27 @@ class Algorithm_bp():
                                 print("👟 Arc(remove 0[現在位置]):{}".format(self.Arc))
                                 print("📂 Storage {}".format(self.BPLIST))
 
-
-                                # if self.Add_Advance:
                                 self.BPLIST.pop(-1) # advanceアドバンスで追加した現在地の文を削除
                                 # でも、advanceで追加してない時は消しちゃいけない
                                 # おそらくアークも消してしまっている？？
-
                                 # self.SAVE_ARC.pop(0)
-
                                 # self.Storage_Arc = self.Cal.caluculate(self.SAVE_ARC)
                                 # print("Storage Arc : {}".format(self.Storage_Arc))
-
-                            
                                 print("📂 Storage(remove) {}".format(self.BPLIST))
 
                             print("👟 Arc[移動コスト]:{}".format(self.Arc))
                             print("👟 Arc(remove 0[現在位置]):{}".format(self.Arc))
-                            print("📂 Storage {}".format(self.BPLIST))
-
-                            
+                            print("📂 Storage {}".format(self.BPLIST))  
                         else:
                             print(f"🥌 WEIGHT = {self.w}")
                             print("👟 Arc[移動コスト]:{}".format(self.Arc))
-
                             print("📂 Storage {}".format(self.BPLIST))
                         self.bf = False
                         self.BACK = False
-                        
-                        # callback
+
                         self.next_position = self.agent.back_position(self.BPLIST, self.w, self.Arc)
                         print(f"========Decision Next State=======\n⚠️  NEXT POSITION:{self.next_position}\n==================================")
-                        self.on_the_way = True
-
-                        
+                        self.on_the_way = True 
                     except:
                     # except Exception as e:
                     #     print('=== エラー内容 ===')
@@ -177,84 +138,59 @@ class Algorithm_bp():
                     #     print('message:' + e.message)
                     #     print('e自身:' + str(e))
                         print("ERROR!")
-                        # self.STATE_HISTORY.append(self.state)
-
                         print("リトライ行動終了！")
-
-
                         print(" = 戻り切った状態 🤖🔚")
                         self.BackPosition_finish = True
-                        
                         break
-                
             try:
 
-                    if self.state == self.next_position:
+                if self.state == self.next_position:
 
-                        # self.lost = False
-                        
-                        # callback
-                        self.BPLIST, self.w, self.Arc, self.OBS = self.agent.back_end(self.BPLIST, self.next_position, self.w, self.OBS)
-                        self.BACK =True
-                        print("🔚 ARRIVE AT BACK POSITION (戻り終わりました。)")
-                        print(f"🤖 State:{self.state}")
-                        print("OBS : {}".format(self.OBS))
+                    # self.lost = False
+                    self.BPLIST, self.w, self.Arc, self.OBS = self.agent.back_end(self.BPLIST, self.next_position, self.w, self.OBS)
+                    self.BACK =True
+                    print("🔚 ARRIVE AT BACK POSITION (戻り終わりました。)")
+                    print(f"🤖 State:{self.state}")
+                    print("OBS : {}".format(self.OBS))
 
-                        
+                    # self.total_stress = 0 # 1108
+                    "-- test1104 --"
+                    "==========================="
+                    "⚠️ 要検討 ⚠️ 戻った時にどのくらい減少させるか test_s = 進んだ分だけ減少させるか = その場所までのストレスまで減少させるか"
+                    print("⚠️ total : {}".format(self.total_stress))
+                    delta_s = self.Observation[self.state.row][self.state.column]
+                    delta_s = round(abs(1.0-delta_s), 3)
+                    if delta_s > 2:
+                        delta_s = 1.0
 
-                        # self.total_stress = 0 # 1108
-                        "-- test1104 --"
-                        "==========================="
-                        "⚠️ 要検討 ⚠️ 戻った時にどのくらい減少させるか test_s = 進んだ分だけ減少させるか = その場所までのストレスまで減少させるか"
-                        print("⚠️ total : {}".format(self.total_stress))
-                        delta_s = self.Observation[self.state.row][self.state.column]
-
-                        # if self.total_stress - (1-delta_s) >= 0:
-                        #     self.total_stress -= (1-delta_s)
-                        # else:
-                        #     self.total_stress = 0
-                        delta_s = round(abs(1.0-delta_s), 3)
-                        if delta_s > 2:
-                            delta_s = 1.0
-
-                        if self.total_stress - delta_s >= 0:
-                            self.total_stress -= delta_s
-                        else:
-                            self.total_stress = 0
-
-                        print("⚠️ delta_s : {}".format(delta_s))
-                        print("⚠️ total : {}".format(self.total_stress))
-                        "-- test1104 --"
-                        self.STATE_HISTORY.append(self.state)
-                        self.TOTAL_STRESS_LIST.append(self.total_stress)
-
-                        # self.total_stress = 0 # 1108
-
-                        
-                        # Add 1027 Robosin
-                        self.TRIGAR = False
-                        self.TRIGAR_REVERSE = False
-                        
-
-
-                        # 0921 統合テスト
-                        print("\n============================\n🤖 🔛　アルゴリズム切り替え\n============================")
-                        break
-
-                        COUNT += 1
-                        continue
-
+                    if self.total_stress - delta_s >= 0:
+                        self.total_stress -= delta_s
                     else:
-                        
-                        if self.on_the_way:
-                            self.on_the_way = False
-                        else:
-                            print("🔛 On the way BACK")
+                        self.total_stress = 0
 
-                    # if self.lost:
-                    #     print("==========\nこれ以上戻れない状態\n==========")
-                        
-                        
+                    print("⚠️ delta_s : {}".format(delta_s))
+                    print("⚠️ total : {}".format(self.total_stress))
+                    "-- test1104 --"
+                    self.STATE_HISTORY.append(self.state)
+                    self.TOTAL_STRESS_LIST.append(self.total_stress)
+
+                    # self.total_stress = 0 # 1108
+
+                    # Add 1027 Robosin
+                    self.TRIGAR = False
+                    self.TRIGAR_REVERSE = False
+
+                    # 0921 統合テスト
+                    print("\n============================\n🤖 🔛　アルゴリズム切り替え\n============================")
+                    break
+
+                    COUNT += 1
+                    continue
+                else:
+                    if self.on_the_way:
+                        self.on_the_way = False
+                    else:
+                        print("🔛 On the way BACK")
             except:
                 # except Exception as e:
                 #     print('=== エラー内容 ===')
@@ -264,10 +200,6 @@ class Algorithm_bp():
                 #     print('e自身:' + str(e))
                     print("state:{}".format(self.state))
                     print("これ以上戻れません。 終了します。")
-                    
-                    
-
-
                     break # expansion 無しの場合は何回も繰り返さない
                 
             print(f"🤖 State:{self.state}")
@@ -275,24 +207,18 @@ class Algorithm_bp():
                 self.STATE_HISTORY.append(self.state)
                 self.TOTAL_STRESS_LIST.append(self.total_stress)
             print(f"Total Stress:{self.total_stress}")
-
             print("TRIGAR : {}".format(self.TRIGAR))
             self.state_history_first = False
-
-
             self.state = self.next_position
-            
-            
             print("COUNT : {}".format(self.COUNT))
-            if self.COUNT > 100: # 50: # 150:
 
+            if self.COUNT > 100: # 50: # 150:
                 print("\n######## BREAK ########\n")
+                
                 # breakではなくて、戻る場所に戻れないから別の戻る場所にするとか
                 print("\n📂 Storage {}\n\n\n".format(self.BPLIST))
                 break
             self.COUNT += 1
-
-        # print("state_history : {}".format(self.STATE_HISTORY))
         self.COUNT = 0
 
         return self.total_stress, self.STATE_HISTORY, self.state, self.OBS, self.BackPosition_finish, self.TOTAL_STRESS_LIST

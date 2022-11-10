@@ -59,13 +59,10 @@ def main():
             back_position = Algorithm_bp(*demo)
 
             explore_action = Algorithm_exp(*demo)
-
-            # STATE_HISTORY = []
+            
             TRIGAR = False
             OBS = []
             total_stress = 0
-            # CrossRoad = []
-            # TOTAL_STRESS_LIST = []
             
             for i in range(20): # 4 戻るノードの個数以上は回す
                 print("===================\n🐬🍏🍋test 0921 : {}\n===================".format(i))
@@ -86,7 +83,7 @@ def main():
                     print(" = 戻り切った状態 🤖🔚 {}回目".format(x+1))
                     # map, bplist reset
                     
-                    ##### Storage を空にする
+                    "== Storageを空にするバージョン =="
                     set = Setting()
                     map = set.reset()
                     test = [grid, map, NODELIST] # , GOAL_STATE]
@@ -95,7 +92,7 @@ def main():
                     # marking_param += 1
                     agent = Agent(env, marking_param, *test)
                     break
-                    ####
+                    "== Storageを空にするバージョン =="
 
                     # # demo = [state, env, agent, NODELIST, Observation]
 
@@ -158,7 +155,6 @@ def main():
 
             print("Episode {}: Agent gets {} stress.".format(i, total_stress))
             print("STATE_HISTORY = {}".format(STATE_HISTORY))
-
             print("self.stress = {}".format(TOTAL_STRESS_LIST))
             print(len(TOTAL_STRESS_LIST))
 
@@ -170,6 +166,8 @@ def main():
 
             # total_stress, STATE_HISTORY = explore_action.Explore()
 
+        
+        "======== データの出力 ========"
         import pandas as pd
         import numpy as np
 
@@ -191,13 +189,9 @@ def main():
     print("150 以内 : {}".format(len(little)))
     print("1000以上 : {}".format(len(over)))
     print("goal : {}".format(goal_count))
-
     print("x(retry), i : {}, {}".format(x, i))
-
     Length_history = len(STATE_HISTORY)
     print("length State history: {}".format(Length_history))
-    # print("length : {}".format(len([[22, 8], [20, 8], [10, 8]])))
-
     print("length Storage Stress : {}".format(len(TOTAL_STRESS_LIST)))
 
 
