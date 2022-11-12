@@ -4,6 +4,9 @@ from reference_match_rate_Robosin import Property
 import pprint
 import random
 
+from scipy.sparse.csgraph import shortest_path, floyd_warshall, dijkstra, bellman_ford, johnson
+from scipy.sparse import csr_matrix
+
 
 class Algorithm_advance():
     
@@ -44,9 +47,25 @@ class Algorithm_advance():
         self.SIGMA_LIST = []
         self.sigma = 0
         self.test_s = 0
+        
+        self.Node_l = ["s", "A", "B", "C", "D", "E", "F", "O", "g", "x"]
+        "-- init --"
+        self.old = "s"
+        self.l = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+        self.l = np.array(self.l)
 
 
-    def Advance(self, STATE_HISTORY, state, TRIGAR, OBS, total_stress, grid, CrossRoad, x, TOTAL_STRESS_LIST):
+    def Advance(self, STATE_HISTORY, state, TRIGAR, OBS, total_stress, grid, CrossRoad, x, TOTAL_STRESS_LIST, move_step, old_from_exp):
         self.STATE_HISTORY = STATE_HISTORY
         self.state = state
         self.TRIGAR = TRIGAR
@@ -69,6 +88,10 @@ class Algorithm_advance():
         self.TOTAL_STRESS_LIST = TOTAL_STRESS_LIST
         arc_s = 0
 
+        # self.move_step = 0
+        self.move_step = move_step
+        self.old = old_from_exp
+
 
         while not self.done:
         
@@ -85,9 +108,13 @@ class Algorithm_advance():
                         try:
                             self.test_s += round(self.stress/float(Arc[index-1]), 3) # 2)
                             self.total_stress += round(self.stress/float(Arc[index-1]), 3)
+
+                            self.move_step += 1
                         except:
                             self.test_s += 0
                             self.total_stress += 0
+
+                            self.move_step += 0
                         print("Arc to the next node : {}".format(Arc[index-1]))
 
                     if self.NODELIST[self.state.row][self.state.column] in pre:
@@ -97,10 +124,46 @@ class Algorithm_advance():
                         # self.total_stress = 0
                 
                         index = Node.index(self.NODELIST[self.state.row][self.state.column])
+
+                        
                         print("<{}> match !".format(self.NODELIST[self.state.row][self.state.column]))
                         print("Pre_Arc (事前のArc) : {}".format(Arc[index]))
                         print("Act_Arc (実際のArc) : {}".format(self.test_s))
-                        self.SAVE_ARC.append(self.test_s)
+                        # self.SAVE_ARC.append(self.test_s)
+
+
+                        "-- min-cost-cal-edit --"
+                        self.new = self.NODELIST[self.state.row][self.state.column]
+                        "-- min-cost-cal-edit --"
+                        LastNode = self.Node_l.index(self.old)
+                        NextNode = self.Node_l.index(self.new)
+                        self.old = self.new
+                        if not self.NODELIST[self.state.row][self.state.column] == "s":
+                            Act_Arc_data = self.move_step
+                        else:
+                            Act_Arc_data = 0
+                        cost_row = LastNode
+                        cost_column = NextNode
+
+                        if self.l[cost_row][cost_column] == 0 or Act_Arc_data < self.l[cost_row][cost_column]:
+                            self.l[cost_row][cost_column] = Act_Arc_data
+
+                        print("-----=========================================================================================\n")
+                        print(f"move step : {self.move_step}")
+                        print("  0,1,2,3,4,5,6,7,8,X")
+                        print(self.l)
+                        # print(f" X : {shortest_path(np.array(self.l), indices=X, directed=False)}")
+                        print(f"{shortest_path(np.array(self.l), directed=False)}")
+                        print("-----=========================================================================================\n")
+                        "-- min-cost-cal-edit --"
+
+                        "== Add 1111 =="
+                        if not self.NODELIST[self.state.row][self.state.column] == "s":
+                            # self.SAVE_ARC.append(round(self.test_s*float(Arc[index]), 2))
+                            self.SAVE_ARC.append(round(self.move_step, 2))
+                        self.move_step = 0
+                        "== Add 1111 =="
+
                         print("⚠️ 実際のアークの配列 : {}".format(self.SAVE_ARC))
                         # print("実際のアークの配列+現在地からの距離 : {}".format(self.SAVE_ARC_2))
                         print("Arc[index]:{}".format(float(Arc[index])))
@@ -221,6 +284,38 @@ class Algorithm_advance():
                         self.STATE_HISTORY.append(self.state)
                         self.TOTAL_STRESS_LIST.append(self.total_stress)
                         print(f"Total Stress:{self.total_stress}")
+
+                        "===== Add 1111 ===="
+                        # self.SAVE_ARC.append(round(self.test_s*float(Arc[index-1]), 2))
+                        self.SAVE_ARC.append(round(self.move_step, 2))
+                        "===== Add 1111 ===="
+
+                        "----- min cost cal -----"
+                        print("-----=========================================================================================\n")
+                        print(f"move step : {self.move_step}")
+                        self.new = "x"
+                        LastNode = self.Node_l.index(self.old)
+                        X = self.Node_l.index(self.new)
+                        # if not self.NODELIST[self.state.row][self.state.column] == "s":
+                        Act_Arc_data = self.move_step
+                        # else:
+                        #     Act_Arc_data = 0
+                        cost_row = LastNode
+                        cost_column = X # NextNode
+                        # if self.l[cost_row][cost_column] == 0 or Act_Arc_data < self.l[cost_row][cost_column]:
+                        
+                        self.l[cost_row][cost_column] = Act_Arc_data # 戻る場所からNodeまでの距離を一時的に最小値とか関係なく格納する
+
+                        print(self.l)
+                        print(f"{shortest_path(np.array(self.l), directed=False)}")
+                        print("----- 始点 = x の場合 -----")
+                        print("Node : 0,  1,  2,  3,  4,  5,  6,  7,  8,  X")
+                        print(f" X : {shortest_path(np.array(self.l), indices=X, directed=False)}")
+                        print("-----=========================================================================================\n")
+
+                        self.l[cost_row][cost_column] = 0 # これが重要 戻る場所は毎回変わるのでリセットする
+                        "----- min cost cal -----"
+
                         break
             else:
                 print("================\n🤖 何も処理しませんでした__2\n================")
@@ -240,6 +335,11 @@ class Algorithm_advance():
                 # self.TRIGAR = False
                 self.BPLIST.append(self.state) # Arcを計算する為に、最初だけ必要
                 self.Add_Advance = True
+
+                "===== Add 1111 ===="
+                # self.SAVE_ARC.append(round(self.test_s*float(Arc[index-1]), 2))
+                self.SAVE_ARC.append(round(self.move_step, 2))
+                "===== Add 1111 ===="
                 break
 
             # self.next_state, self.stress, self.done = self.env._move(self.state, self.action, self.TRIGAR)
@@ -249,6 +349,10 @@ class Algorithm_advance():
 
             print("COUNT : {}".format(self.COUNT))
             if self.COUNT > 150: # 150:
+
+                # "===== Add 1111 ===="
+                # self.SAVE_ARC.append(round(self.test_s*float(Arc[index-1]), 2))
+                # "===== Add 1111 ===="
                 break
             self.COUNT += 1
 

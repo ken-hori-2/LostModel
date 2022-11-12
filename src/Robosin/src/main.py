@@ -63,11 +63,14 @@ def main():
             TRIGAR = False
             OBS = []
             total_stress = 0
+
+            move_step = 0
+            old_to_adavance = "s"
             
             for i in range(20): # 4 戻るノードの個数以上は回す
                 print("===================\n🐬🍏🍋test 0921 : {}\n===================".format(i))
 
-                total_stress, STATE_HISTORY, state, TRIGAR, OBS, BPLIST, action, Add_Advance, GOAL, SAVE_ARC, CrossRoad, Storage, Storage_Stress, TOTAL_STRESS_LIST = Advance_action.Advance(STATE_HISTORY, state, TRIGAR, OBS, total_stress, grid, CrossRoad, x, TOTAL_STRESS_LIST)
+                total_stress, STATE_HISTORY, state, TRIGAR, OBS, BPLIST, action, Add_Advance, GOAL, SAVE_ARC, CrossRoad, Storage, Storage_Stress, TOTAL_STRESS_LIST = Advance_action.Advance(STATE_HISTORY, state, TRIGAR, OBS, total_stress, grid, CrossRoad, x, TOTAL_STRESS_LIST, move_step, old_to_adavance)
                 if GOAL:
                     print("探索済みのノード Storage : {}".format(Storage))
                     print("未探索のノード CrossRoad : {}".format(CrossRoad))
@@ -143,7 +146,7 @@ def main():
                 print("============\n=🤖　🌟　⚠️ =\n============")
                 print("\n============================\n🤖 🔛　アルゴリズム切り替え -> agent Explore\n============================")
 
-                total_stress, STATE_HISTORY, state, TRIGAR, CrossRoad, GOAL, TOTAL_STRESS_LIST = explore_action.Explore(STATE_HISTORY, state, TRIGAR, total_stress, grid, CrossRoad, x, TOTAL_STRESS_LIST)
+                total_stress, STATE_HISTORY, state, TRIGAR, CrossRoad, GOAL, TOTAL_STRESS_LIST, move_step, old_to_adavance = explore_action.Explore(STATE_HISTORY, state, TRIGAR, total_stress, grid, CrossRoad, x, TOTAL_STRESS_LIST)
 
                 if GOAL:
                     print("探索済みのノード Storage : {}".format(Storage))

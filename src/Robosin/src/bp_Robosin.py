@@ -1,6 +1,8 @@
 
 import math
 from reference_match_rate_Robosin import Property
+import copy
+from Spare.move_cost_calculation import move_cost_cal
 
 class Algorithm_bp():
 
@@ -34,6 +36,8 @@ class Algorithm_bp():
         # self.next_position = []
         self.Storage_Arc = []
         self.SAVE = []
+
+        # self.COST = move_cost_cal()
             
 
     def BP(self, STATE_HISTORY, state, TRIGAR, OBS, BPLIST, action, Add_Advance, total_stress, SAVE_ARC, TOTAL_STRESS_LIST):
@@ -64,7 +68,7 @@ class Algorithm_bp():
 
 
 
-            
+
             if self.BACK or self.bf:
                     try:
                         
@@ -90,17 +94,36 @@ class Algorithm_bp():
                                 # self.Arc = []
                                 # for x in range(len(self.BPLIST)):
                                 #     self.Arc.append(x)
-                                self.SAVE = []
+                                
+                                
+                                "Comment Out"
+                                # self.SAVE = []
 
-                                SUM = 0
-                                first = True
-                                for x in self.SAVE_ARC:
-                                    if first:
-                                        first = False
-                                    else:
-                                        self.SAVE.insert(0, self.SAVE_ARC[-1] + SUM)
-                                    SUM += x
-                                print("############## DEMO ############## : {}".format(self.SAVE))
+                                # SUM = 0
+                                # first = True
+                                # for x in self.SAVE_ARC:
+                                #     if first:
+                                #         first = False
+                                #     else:
+                                #         self.SAVE.insert(0, self.SAVE_ARC[-1] + SUM)
+                                #     SUM += x
+                                # print("############## DEMO ############## : {}".format(self.SAVE))
+                                "Comment Out"
+
+                                "===== Add 1111 ====="
+                                self.test = copy.copy(self.SAVE_ARC)
+                                self.COST = move_cost_cal(self.test)
+                                self.result_list = self.COST.test()
+                                print("========== Move Cost Calculation ==========")
+                                print(self.result_list)
+                                print("========== Move Cost Calculation ==========")
+                                self.SAVE_ARC.pop(-1)
+                                "===== Add 1111 ====="
+
+
+
+
+                                
                                 # self.Arc = self.SAVE
 
                                 print("👟 Arc[移動コスト]:{}".format(self.Arc))

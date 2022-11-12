@@ -48,6 +48,9 @@ class Algorithm_exp():
         index = Node.index("s")
         self.TOTAL_STRESS_LIST = TOTAL_STRESS_LIST
 
+        self.move_step = 0
+        self.old_to_advance = self.NODELIST[self.state.row][self.state.column]
+
         
         while not self.done:
             print("\n========== 🌟 {}steps ==========".format(self.COUNT+1))
@@ -65,9 +68,18 @@ class Algorithm_exp():
                     try:
                         self.test_s += round(self.stress/float(Arc[index-1]), 3) # 2)
                         self.total_stress += round(self.stress/float(Arc[index-1]), 3)
+
+                        "----- min cost cal -----"
+                        if not self.NODELIST[self.state.row][self.state.column] in pre:
+                            self.move_step += 1
+                        "----- min cost cal -----"
                     except:
                         self.test_s += 0
                         self.total_stress += 0
+
+                        "----- min cost cal -----"
+                        self.move_step += 0
+                        "----- min cost cal -----"
                     print("Arc to the next node : {}".format(Arc[index-1]))
                     "---- Add 1108 ----"
 
@@ -158,6 +170,11 @@ class Algorithm_exp():
             
                 "Advance とは違い、こっちにはbreakはない"
 
+
+                "----- min cost cal -----"
+                self.move_step = 0
+                "----- min cost cal -----"
+
             print(f"Total Stress:{self.total_stress}")
             print("trigar : {}".format(self.TRIGAR))
             self.STATE_HISTORY.append(self.state)
@@ -185,6 +202,10 @@ class Algorithm_exp():
 
                 "Add1108"
                 # break
+
+                "----- min cost cal -----"
+                self.move_step = 0
+                "----- min cost cal -----"
                 
             print("All explore : {}".format(self.All_explore))
             if self.All_explore:
@@ -196,6 +217,13 @@ class Algorithm_exp():
                 ############コメントアウト##############
                 # self.TRIGAR = True
                 ############コメントアウト##############
+
+                "----- min cost cal -----"
+                self.move_step = 0
+                # self.old_to_advance = self.NODELIST[self.state.row][self.state.column]
+                "----- min cost cal -----"
+
+
                 break
 
             # self.next_state, self.stress, self.done = self.env._move(self.state, self.action, self.TRIGAR, self.All_explore, self.Reverse)
@@ -214,4 +242,4 @@ class Algorithm_exp():
         if self.done:
             print("GOAL")
 
-        return self.total_stress, self.STATE_HISTORY, self.state, self.TRIGAR, self.CrossRoad, GOAL, self.TOTAL_STRESS_LIST
+        return self.total_stress, self.STATE_HISTORY, self.state, self.TRIGAR, self.CrossRoad, GOAL, self.TOTAL_STRESS_LIST, self.move_step, self.old_to_advance
