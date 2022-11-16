@@ -140,3 +140,48 @@ print("----- 始点 = x の場合 -----")
 # print("Node : 0,  1,  2,  3,  4,  5,  X")
 print("Node : 0,  1,  2,  3,  4,  5,  6,  7,  8,  X")
 print(f" X : {shortest_path(np.array(l), indices=X, directed=False)}")
+
+result = []
+result = shortest_path(np.array(l), indices=X, directed=False)
+print(f" X : {result}")
+print(type(shortest_path(np.array(l), indices=X, directed=False)))
+print(type(result))
+
+
+
+
+"----- inf -> 0 に置換 -----"
+"----- inf -> nan に置換 -----"
+result[result == np.inf] = np.nan # 0
+print(result)
+
+import pandas as pd
+# result = pd.Series([1, 2, 3, np.nan, 0, None], index=['A','B','C','D','E','F'])
+result = pd.Series(result, index=Node_l)
+result.dropna(inplace=True)
+print(result)
+
+print(result["A"])
+print(result["E"])
+
+Node = "x"
+print(result[Node])
+
+# result.drop(index=["A"], inplace=True)
+# print(result)
+# result.drop(index=["s"], inplace=True)
+# print(result)
+# result.drop(index=["D"], inplace=True)
+# print(result)
+# result.drop(index=["x"], inplace=True)
+test1 = "A"
+test2 = "x"
+result.drop(index=[f"{test1}", f"{test2}"], inplace=True)
+print(result)
+
+
+# result.drop([30.0], inplace=True)
+# print(result)
+
+# move_cost_result = shortest_path(result, indices=X, directed=False) # bpで使う
+# print(move_cost_result)

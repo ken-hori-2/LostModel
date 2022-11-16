@@ -6,6 +6,7 @@ import random
 from reference_match_rate_Robosin import Property
 import math
 from Lost_Action_actions import Agent_actions
+import pandas as pd
 
 
 class Agent():
@@ -34,6 +35,9 @@ class Agent():
         "----- Add 1110 -----"
         self.decision_action = Agent_actions(self.env)
         "======================================================="
+
+        "----- Add 1114 -----"
+        self.Node_l = ["s", "A", "B", "C", "D", "E", "F", "O", "g", "x"]
 
     def policy_advance(self, state, TRIGAR, action):
         
@@ -353,12 +357,14 @@ class Agent():
         print("= 現在地から次にゴールに迎える選択肢を選ぶ【未探索方向】\n")
         self.lost = True
 
-    def back_position(self, BPLIST, w, Arc):
+    # def back_position(self, BPLIST, w, Arc):
+    def back_position(self, BPLIST, w, Arc, Cost): # change
         
         "----------------------------------------------------------------------"
         # ストレスの小さいノードに戻るver.
         "== stressの小ささで戻るノードを決める場合 =="
-        Move_Cost = [round(Arc[x],2) for x in range(len(Arc))] # Arc_INVERSE ではなく Arc
+        # Move_Cost = [round(Arc[x],2) for x in range(len(Arc))] # Arc_INVERSE ではなく Arc
+        Move_Cost = [round(Cost[x],2) for x in range(len(Cost))] # change
         "----------------------------------------------------------------------"  
         "----------------------------------------------------------------------"
         # 正規化にすると0, 1が出てしまうので、stress×cost で0になりやすく、そこに戻ることが多くなってしまう 1026
@@ -370,6 +376,8 @@ class Agent():
         # print("📐正規化 w : {}, Arc : {}".format(w, Arc))
         # print("📐正規化 Weight : {}, Move Cost : {}".format(w, Move_Cost))
         print("📐 正規化 WEIGHT : {}, Move_Cost : {}".format(w, Move_Cost))
+        print(type(w), type(Move_Cost))
+        "-> どっちもlist"
 
         # Arc = [0, 0]の時,Arc = [1, 1]に変更
         if all(elem  == 0 for elem in Move_Cost):
@@ -380,17 +388,26 @@ class Agent():
             print("   WEIGHT = [0, 0]の時, WEIGHT : {}".format(w))
 
         WEIGHT_CROSS = [round(x*y, 3) for x,y in zip(w,Move_Cost)]
+        "->改良する必要あり"
+        "OBSのみ削除されている"
+
+        
         print("⚡️ WEIGHT CROSS:{}".format(WEIGHT_CROSS))
 
-        if all(elem  == 0 for elem in WEIGHT_CROSS):
-            print("WEIGHT CROSSは全部0です。")
-            
-            # Arc = Arc.tolist()
-            print("Arc type : {}".format(type(Arc)))
-            near_index = Arc.index(min(Arc))
-            print("Arc:{}, index:{}".format(Arc, near_index))
-            WEIGHT_CROSS[near_index] = 1
-            print("⚡️ WEIGHT CROSS:{}".format(WEIGHT_CROSS))
+        try:
+            if all(elem  == 0 for elem in WEIGHT_CROSS):
+                print("WEIGHT CROSSは全部0です。")
+                
+                # Arc = Arc.tolist()
+                print("Arc type : {}".format(type(Arc)))
+                near_index = Arc.index(min(Arc))
+                print("Arc:{}, index:{}".format(Arc, near_index))
+                WEIGHT_CROSS[near_index] = 1
+                print("⚡️ WEIGHT CROSS:{}".format(WEIGHT_CROSS))
+        except:
+            pass
+
+        print(type(WEIGHT_CROSS))
 
         
         "ストレスのみで戻る場所決定する場合"
@@ -404,30 +421,49 @@ class Agent():
         next_position = BPLIST[WEIGHT_CROSS.index(min(WEIGHT_CROSS))] # stress + cost
         "----------------------------------------------------------------------"
 
+
+
+
+        "----- Add 1114 -----"
+        # next_position = pd.Series(next_position, index=self.Node_l)
+
         return next_position
 
-    def back_end(self, BPLIST, next_position, w, OBS):
+    # def back_end(self, BPLIST, next_position, w, OBS):
+    def back_end(self, BPLIST, next_position, w, OBS, test_index, move_cost_result):
+        print(BPLIST)
         
-        bpindex = BPLIST.index(next_position)
+        # bpindex = BPLIST.index(next_position) # comment out 1114
+
+
         # Arc = [(abs(BPLIST[bpindex].row-BPLIST[x].row)) for x in range(len(BPLIST))]
         Arc = [math.sqrt((BPLIST[-1].row - BPLIST[x].row) ** 2 + (BPLIST[-1].column - BPLIST[x].column) ** 2) for x in range(len(BPLIST))]
+
+
+
+
+        
         print("👟 Arc[移動コスト]:{}".format(Arc))
-        index = Arc.index(0)
-        Arc.pop(index)
+        # index = Arc.index(0)
+        # Arc.pop(index)
         print("👟 Arc(remove 0[現在位置]):{}".format(Arc))
         print("📂 Storage {}".format(BPLIST))
-        BPLIST.remove(next_position)
+        # BPLIST.remove(next_position)
         print("📂 Storage(remove) {}".format(BPLIST))
-        w = np.delete(w, bpindex)
+        # w = np.delete(w, bpindex)
+
+        w = BPLIST
         print("🥌 WEIGHT(remove):{}".format(w))
 
         # print("🥌 OBS:{}".format(OBS))
         # OBS = np.delete(OBS, bpindex)
         try:
-            OBS.pop(bpindex)
+            # OBS.pop(bpindex)
+            OBS.pop(test_index)
         except:
             OBS = OBS.tolist()
-            OBS.pop(bpindex)
+            # OBS.pop(bpindex)
+            OBS.pop(test_index)
         print("🥌 OBS(remove):{}".format(OBS))
 
         return BPLIST, w, Arc, OBS
