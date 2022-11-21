@@ -11,8 +11,11 @@ from environment import Environment
 from bp import Algorithm_bp # 戻る行動の可視化ver.
 from exp import Algorithm_exp
 from agent import Agent
-from setting_large_bp_grid import Setting
-from advance_test import Algorithm_advance
+# from setting_large_bp_grid import Setting
+# from advance_test import Algorithm_advance
+
+from setting_large_bp_grid_Neural import Setting
+from advance_Neural import Algorithm_advance
 
 def main():
 
