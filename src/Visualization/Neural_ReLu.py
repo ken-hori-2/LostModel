@@ -46,7 +46,7 @@ class neural():
         self.Output = self.relu(self.XnWn)
         # self.Output = self.step(self.XnWn)
         
-        print("sum (XnWn) : ", self.XnWn)
+        print("Σ (XnWn) : ", self.XnWn)
         return self.Output, self.XnWn
 
     def visalization(self, XnWn, result):
@@ -130,6 +130,7 @@ def main():
     XnWn_list = []
     
     "n = 1,2,3,4"
+    # ΔS, n
     # Xn = [np.array([0.5, 1]), np.array([0.5, 2]), np.array([0.5, 3]), np.array([0.5, 4])]
     # Xn = [np.array([0.4, 1]), np.array([0.4, 2]), np.array([0.4, 3]), np.array([0.4, 4])]
 

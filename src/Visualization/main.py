@@ -133,7 +133,7 @@ def main():
                 print("\n============================\n🤖 🔛　アルゴリズム切り替え -> agent Advance\n============================")
 
             print("Episode {}: Agent gets {} stress.".format(i, total_stress))
-            print("state_history : {}".format(STATE_HISTORY))
+            print("STATE_HISTORY = {}".format(STATE_HISTORY))
             
             print("Storage Stress : {}".format(Storage_Stress))
             
@@ -164,7 +164,7 @@ def main():
             print("length Cost D : {}".format(len(Cost_D)))
 
 
-            print("self.stress = {}".format(TOTAL_STRESS_LIST))
+            print("stress = {}".format(TOTAL_STRESS_LIST))
             print(len(TOTAL_STRESS_LIST))
 
             if GOAL:

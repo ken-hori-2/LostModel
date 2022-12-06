@@ -4,6 +4,7 @@ from reference_match_rate import Property
 import pprint
 import random
 from Neural_ReLu import neural
+import copy
 
 
 class Algorithm_advance():
@@ -52,10 +53,13 @@ class Algorithm_advance():
         self.sigma = 0
         self.test_s = 0
 
-        self.n = 0
+        self.n = 1 # 0
         self.ind = ["O", "A", "B", "C"]
         self.data_node = []
         self.XnWn_list = []
+        self.save_s = []
+        self.save_s_all = []
+        self.M = 1 # 0
 
     
     
@@ -112,7 +116,13 @@ class Algorithm_advance():
 
         # test Add 1029
         arc_s = 0
-        arc_s_2 = 0
+        ΔS = 0
+
+        "1205"
+        nnn=1
+        mmm=1
+        "1205"
+        
 
 
 
@@ -134,11 +144,18 @@ class Algorithm_advance():
                         # self.total_stress += self.stress
                         # if self.NODELIST[self.state.row][self.state.column] in pre:
                         #     index = Node.index(self.NODELIST[self.state.row][self.state.column])
+
+                        "1205"
+                        ex=(nnn/(nnn+mmm))
+                        ex = -2*ex+2
+                        "1205"
                             
                         try:
                             # self.total_stress += round(self.stress/float(Arc[index-1]), 3) # 2)
-                            self.test_s += round(self.stress/float(Arc[index-1]), 3) # 2)
-                            self.total_stress += round(self.stress/float(Arc[index-1]), 3)
+                            self.test_s += round(self.stress/float(Arc[index-1]), 3)               *ex # 1205 Add *ex
+                            # self.test_s += round((self.stress/float(Arc[index-1]))/(self.n+1), 3)
+                            self.total_stress += round(self.stress/float(Arc[index-1]), 3)         *ex # 1205 Add *ex
+                            # self.total_stress += round((self.stress/float(Arc[index-1])/(self.n+1)), 3)
                         except:
                             # self.total_stress += 0
                             self.test_s += 0
@@ -177,38 +194,60 @@ class Algorithm_advance():
                         "-- これがいずれのΔSnodeの式 今はArc に対するΔSのみ --"
                         
                         
+                        "====================================== Add =========================================="
                         # arc_s = round(abs(1.0-standard[0]), 3)
-                        arc_s_2 = 0.3 # 0.2
+                        ΔS = 0.3 # 0.1, 0.2, 0.3 # ここ arc_s
+                        self.save_s_all.append(ΔS)
                         "----- 1120 -----"
                         self.n += 1
+                        "1205"
+                        nnn+=1
+                        self.M=1
+                        mmm=1
+                        "1205"
+
                         Wn = np.array([1, -0.1])
                         print("重みWn [w1, w2] : ", Wn)
                         model = neural(Wn)
-                        print(f"入力 : {arc_s_2}, {self.n}")
-                        neu, XnWn = model.perceptron(np.array([arc_s_2, self.n])) # Relu関数
-                        print(f"出力result {x} : {abs(neu)}")
-                        if neu > 0: # or src = neural
+                        print(f"入力Xn[ΔS, n] : {ΔS}, {self.n}")
+                        neu_fire, XnWn = model.perceptron(np.array([ΔS, self.n])) # Relu関数
+                        print(f"出力result [n={self.n} : {abs(neu_fire)}]")
+                        if neu_fire > 0: # or src = neural
                             print("🔥発火🔥")
+                            "----- Add 1122 -----"
+                            self.save_s.append(round(ΔS-neu_fire, 2))
+                            "----- Add 1122 -----"
                             # pass
-                            arc_s_2 = neu
+                            ΔS = neu_fire
                         else:
                             print("💧発火しない💧")
+                            "----- Add 1122 -----"
+                            self.save_s.append(ΔS)
+                            "----- Add 1122 -----"
                             # pass
-                            arc_s_2 = 0
-                        self.data_node.append(abs(neu))
+                            ΔS = 0
+                        self.data_node.append(abs(neu_fire))
                         self.XnWn_list.append(XnWn)
-                        print(self.data_node)
-                        print(self.XnWn_list)
+                        print("[result] : ", self.data_node)
+                        print("[入力, 出力] : ", self.XnWn_list)
                         "----- 1120 -----"
 
                         "Add meeting 1120"
-                        arc_s = round(abs(self.total_stress-standard[0]+arc_s_2), 3)
+                        arc_s = round(abs(self.total_stress-standard[0]+ΔS), 3)
+                        # arc_s = round(abs(ΔS), 3)
                         print("==========================================")
                         print("SUM : ", self.total_stress)
                         print("ΔS Arc : ", standard[0])
-                        print("ΔS : ", arc_s_2)
+                        print("ΔS : ", ΔS)
                         print("result : ", arc_s)
+                        print("Save ΔS-Neuron : ", self.save_s)
+                        print("Save's Σ : ", round(sum(self.save_s), 2))
+                        Σ = round(sum(self.save_s), 2)
+
+                        print("Save ΔS : ", self.save_s_all)
+                        print("Save's All Σ : ", round(sum(self.save_s_all), 2))
                         print("==========================================")
+                        "====================================== Add =========================================="
 
                         
                         # arc_s = round(1.0-standard[0], 2)
@@ -395,18 +434,118 @@ class Algorithm_advance():
 
                             print("CrossRoad : {}\n\n\n".format(self.CrossRoad))
 
-                            "-- Add 1031 --"
-                            # if self.NODELIST[self.state.row][self.state.column] not in pre: # これいらない
-                            #     print("事前情報にないNode!!!!!!!!!!!!")
-                            #     self.total_stress+=1
-                            #     if self.NODELIST[self.state.row][self.state.column] == "x": # "O": # "g":
-                            #         self.Node_s.append(0)
-                            #         self.Node_A.append(0)
-                            #         self.Node_B.append(0)
-                            #         self.Node_C.append(0)
-                            #         self.Node_D.append(0)
-                            #         self.Node_g.append(1.0) # stress)
-                            "-- Add 1031 --"
+                            
+                        "----- Add 1124 -----"
+                        print("事前情報にないNode!!!!!!!!!!!!")
+                        if self.NODELIST[self.state.row][self.state.column] == "x":
+                            self.M += 1
+                            "1205"
+                            mmm+=1
+                            "1205"
+
+                            "----- A -----"
+                            # print("===== 🌟🌟🌟🌟🌟 =====")
+                            # print("total : ", round(self.total_stress, 3))
+                            # print("Save ΔS-Neuron : ", self.save_s)
+                            # print("Save's Σ : ", Σ)
+                            # self.total_stress += 0.2*Σ*self.M
+                            # # self.total_stress += Σ*self.M
+                            # print("total : ", round(self.total_stress, 3))
+                            # print("===== 🌟🌟🌟🌟🌟 =====")
+                            "----- A -----"
+                            
+                            "----- B -----"
+                            # # arc_s = round(abs(self.total_stress-self.test_s+0.2*Σ*self.M))
+                            # print("===== 🌟🌟🌟🌟🌟 =====")
+                            # print("total : ", round(self.total_stress, 3))
+                            # print("Save ΔS-Neuron : ", self.save_s)
+                            # try:
+                            #     print("Save's Σ : ", Σ)
+                            # except:
+                            #     pass
+
+                            # "parameter" # Add Σ
+                            # # Σ = 2 # 10
+                            # # self.M = 1
+                            # self.n = 2 # 5 # 5 # 2 # 3 # 10
+                            # Σ = 0.3*self.n
+                            # print("Save's Σ : ", Σ)
+
+                            # # self.n = 10
+                            # self.n2 = copy.copy(self.n)
+                            # self.n = 0
+                            # "parameter"
+                            # # self.total_stress += 0.2*Σ*self.M # mのみ
+                            # # self.total_stress += Σ*self.M # 不安がどんどん膨張していくから (M=0,1,2...) # mのみ
+                            # # self.total_stress += 0.1*Σ*self.M # mのみ
+                            # "----- Add 1128 -----"
+                            # print("Save's Σ : ", Σ)
+                            # print("[M, n2] : ", self.M, self.n2)
+                            # print("m/n2=", self.M/self.n2)
+                            # print("total : ", round(self.total_stress, 3))
+                            # # self.total_stress += Σ*(self.M/self.n2)
+                            # print("m/m+n=", self.M/(self.M+self.n2))
+                            # # print("Σ*2*m/(m+n)=", Σ *2* (self.M/(self.M+self.n2)))
+                            # # self.total_stress += Σ *2* (self.M/(self.M+self.n2))
+                            # print("Σ*4*m/(m+n)=", Σ *4* (self.M/(self.M+self.n2)))
+                            # self.total_stress += Σ *4* (self.M/(self.M+self.n2))
+                            # print("total : ", round(self.total_stress, 3))
+                            # "----- Add 1128 -----"
+                            # # self.total_stress = 0
+                            # # self.total_stress += arc_s
+                            # self.STATE_HISTORY.append(self.state)
+                            # self.TOTAL_STRESS_LIST.append(self.total_stress)
+                            # self.total_stress -= self.test_s # ×分は蓄積したので、基準距離分は一旦リセット
+                            # print("total : ", round(self.total_stress, 3))
+                            # self.test_s = 0
+                            # print("===== 🌟🌟🌟🌟🌟 =====")
+                            "----- B -----"
+
+                            "----- C -----"
+                            print("===== 🌟🌟🌟🌟🌟 =====")
+                            print("total : ", round(self.total_stress, 3))
+                            print("Save ΔS-Neuron : ", self.save_s)
+                            try:
+                                print("Save's Σ : ", Σ)
+                            except:
+                                pass
+                            "----- parameter -----" # Add Σ
+                            # # Σ = 2 # 10
+                            # # self.M = 1
+                            # self.n = 5 # 2 # 5 # 3 # 10
+                            # # "-- x --"
+                            # # Σ = 0.3*self.n # 0.3, 0.1, 0.2
+                            # # print("Save's Σ : ", Σ)
+                            Σ = 1 # 1.1 # 0.1
+                            "-- x --"
+                            self.n2 = copy.copy(self.n)
+                            # self.n = 0
+                            self.n=1
+                            nnn=1
+                            "----- parameter -----"
+                            print("Save's Σ : ", Σ)
+                            print("[M, n2] : ", self.M, self.n2)
+                            # print("m/n2=", self.M/self.n2)
+                            print("total : ", round(self.total_stress, 3))
+                            print("m/m+n=", self.M/(self.M+self.n2))
+                            print("Σ*4*m/(m+n)=", Σ *4* (self.M/(self.M+self.n2)))
+                            # self.total_stress += Σ *4.0* (self.M/(self.M+self.n2))
+                            # self.total_stress += Σ *2.0* (self.M/(self.M+self.n2)) # n=5,0.2 # ここ
+                            self.total_stress += Σ *1.0* (self.M/(self.M+self.n2)) # n=5,0.2 # ここ main
+                            # self.total_stress += Σ # row
+                            # self.total_stress += Σ*2 # row*2
+                            
+                            print("total : ", round(self.total_stress, 3))
+                            self.STATE_HISTORY.append(self.state)
+                            self.TOTAL_STRESS_LIST.append(self.total_stress)
+                            self.total_stress -= self.test_s # ×分は蓄積したので、基準距離分は一旦リセット
+                            print("total : ", round(self.total_stress, 3))
+                            self.test_s = 0
+                            print("===== 🌟🌟🌟🌟🌟 =====")
+                            "----- C -----"
+                            
+                        "----- Add 1124 -----"
+
 
                         print("🪧 NODE : ❌")
                         print("no match!")
